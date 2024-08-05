@@ -1,14 +1,20 @@
 <template>
     <main class="Main font-montserrat grid grid-cols-2 gap-[1px] bg-black">
             <div class="main__title_wrapper row-span-5">
-                <div class="main-title__left p-[79px] row-span-2 border-b-[1px] border-black">
-                    <Title>Киевские люксовые букеты</Title>
-                    <p class="border-0 border-black border-b-2 pb-5 mt-4">Открой для себя уникальные букеты и подарки для любого повода: порадуй всех с <i>нашей онлайн доставкой</i></p>
-                    <div class="pt-6 flex">
-                        <img src="~/public/img.png" alt="lol">
-                        <div class="border-l-[1px] border-black ml-6 h-100 flex justify-items-end">
-                            <p class="mt-auto ml-[24px] block text-[14px]">Ощутите радость дарения с нашей современной студии флоры. Закажите онлайн и отправьте растения и подарки сегодня.</p>
+                <div class="main-title__left border-b-[1px] border-black pt-[79px] pb-[80px] px-[80px]">
+                    <div class="title-wrap grid grid-rows-2 gap-[1px] bg-black">
+                        <div class="main__title-wrap">
+                            <Title>Киевские люксовые букеты</Title>
+                            <p class="mt-6">Открой для себя уникальные букеты и подарки для любого повода: порадуй всех с <i>нашей онлайн доставкой</i></p>
                         </div>
+                        <div class="grid grid-cols-2 border-black">
+                                <div class="">
+                                    <img src="~/public/img.png" alt="Букеты" class="w-full pt-[24px] pr-[24px]">
+                                </div>
+                                <div class="border-l-[1px] mt-[24px] border-black ml-6 h-100 flex justify-items-end">
+                                    <p class="mt-auto pl-[24px] block text-[14px]">Ощутите радость дарения с нашей современной студии флоры. Закажите онлайн и отправьте растения и подарки сегодня.</p>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -141,7 +147,8 @@
 </script>
 
 <style scoped>
-    .Main > *, .main__choose_right > *, .main__contact_inner > *, .main__contact > * {
+    .Main > *, .main__choose_right > *, .main__contact_inner > *, .main__contact > *, .title-wrap > * {
         background: white;
     }
+    
 </style>
