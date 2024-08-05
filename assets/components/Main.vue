@@ -71,7 +71,7 @@
                     </div>
                 </div>
             <div class="main__contactImg grid gap-[1px] bg-black "> 
-                <NuxtImg src="./column.png"/>
+                <NuxtImg src="./column.png" class="w-full"/>
                 <div class="main__contact_inner grid grid-cols-2 gap-[1px] bg-black">
                     <button>Присоединяйся к нам</button>
                     <div class="py-[28px] px-[60px] flex justify-between">
@@ -87,7 +87,7 @@
                 <SubTitle class="text-center my-[80px]">Наши услуги</SubTitle>
             </div>
             <div class="main__subscribtionImg">
-                <NuxtImg src="./image.png" /> 
+                <NuxtImg src="./image.png" class="w-full" /> 
             </div>
             <div class="main__subscribtion px-[80px] flex flex-col items-center justify-center text-center">
                 <p>Сервис</p>
@@ -95,31 +95,30 @@
                 <p class="mb-16">Experience the convenience and savings of regular flower deliveries with our flexible subscription service - up to 30% more profitable than one-time purchases.</p>
                 <button class="px-[40px] py-[20px] text-black bg-white border border-black uppercase">Записаться</button>
             </div>
-            <div class="main__wedding col-span-2 py-[200px] !bg-[url('./wedding_img.png')] flex flex-col !text-white justify-center text-center items-center">
+            <div class="main__wedding col-span-2 py-[200px] flex flex-col !text-white justify-center text-center items-center" :style="{ backgroundImage: `url(${backgroundUrl})` }">
                 <p>Сервис</p>
                 <SubTitle>Свадьбы & Мероприятия</SubTitle>
                 <p class="mb-16">Let our team of expert florists and designers create stunning, on-trend floral décor for your special day. Trust us to bring your vision to life.</p>
                 <button class="px-[40px] py-[20px] bg-none border border-white uppercase">Записаться</button>
             </div>
-            <div class="main__clients col-span-2 flex flex-col justify-center items-center">
+            <div class="main__clients col-span-2 flex flex-col justify-center items-center p-[80px]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="4em" height="4em" viewBox="0 0 32 32">
                     <g fill="none" fill-rule="evenodd">
                         <circle cx="16" cy="16" r="16" fill="#bfbbbb" />
                         <path fill="#fff" d="M10.427 19.214L9 19.768l.688-2.759l1.444-.58L13.213 8h5.129l-1.519 6.196l1.41-.571l-.68 2.75l-1.427.571l-.848 3.483H23L22.127 24H9.252z" />
                     </g>
                 </svg>
-                <p>Отзывы</p>
-                <SubTitle>Отзывы наших клиентов</SubTitle>
-                <div class="rewiews__wrapper text-[24px]">
-                    <carousel :value="products" :numVisible="1" :numScroll="1">
-                        <template #item="product">
-                            <div>
-                                <p>{{ product.data.text }}</p>
-                                <p>{{ product.data.author }}</p>
-                            </div>
+                <p class="mt-[10px]">Отзывы</p>
+                <SubTitle class="mt-[24px] mb-[16px]">Отзывы наших клиентов</SubTitle>
+                <div class="reviews__wrapper flex text-[24px]">
+                    <Carousel :num-scroll="1" :num-visible="1" :value="products" containerClass="text-center text-3xl font-medium">
+                        <template #item="slotProps">
+                            <p>"{{ slotProps.data.text }}"</p>
+                            <p>- {{ slotProps.data.author }}</p>
                         </template>
-                    </carousel>
+                    </Carousel>
                 </div>
+                <button class="px-[80px] py-[20px] text-black bg-white border border-black uppercase text-medium">Отзывы</button>
             </div>
         </main>
 </template>
@@ -128,14 +127,16 @@
     import Title from '../shared/Title.vue';
     import MainCard from '../shared/MainCard.vue';
     import SubTitle from '../shared/SubTitle.vue';
-    import { Carousel } from '#build/components';
+    import Carousel from 'primevue/carousel';
+
+    import backgroundUrl from "~/public/wedding_img.png";
     
     // TODO: fetch rewiews from google api
 
     const products = ref([
-        {id: 1488, text: "lorem ipsum doasdasdlor sit amet", author: "some faggot"},
-        {id: 65465, text: "lorem ipsum dolor sit amet", author: "another faggot"},
-        {id: 228, text: "lorem ipsum dolor sit amet", author: "third faggot"},
+        {id: 1488, text: "Those flowers are the best. I'll buy it later again", author: "Jeff"},
+        {id: 65465, text: "Another one good review about those flowers. Those flowers are the best and you should buy it, or you'll be dead", author: "Sam"},
+        {id: 228, text: "LOrem ipsum dolor sit amet commit another one bite the dust queen lol", author: "John"},
     ])
 </script>
 

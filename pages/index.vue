@@ -1,7 +1,9 @@
 <template>
-    <Header />
-    <Main />
-    <Footer />
+    <div class="index bg-black grid gap-[1px]">
+        <Header />
+        <Main />
+        <Footer />
+    </div>
 </template>
   
 <script setup>
