@@ -1,6 +1,6 @@
 <template>
-    <main class="Main font-montserrat grid grid-cols-2 gap-[1px] bg-black">
-            <div class="main__title_wrapper row-span-5">
+    <main class="Main font-montserrat md:grid flex flex-col grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
+            <div class="main__title_wrapper md:row-span-5">
                 <div class="main-title__left border-b-[1px] border-black pt-[79px] pb-[80px] px-[80px]">
                     <div class="title-wrap grid grid-rows-2 gap-[1px] bg-black">
                         <div class="main__title-wrap">
@@ -8,17 +8,17 @@
                             <p class="mt-6">Открой для себя уникальные букеты и подарки для любого повода: порадуй всех с <i>нашей онлайн доставкой</i></p>
                         </div>
                         <div class="grid grid-cols-2 border-black">
-                                <div class="">
-                                    <img src="~/public/img.png" alt="Букеты" class="w-full pt-[24px] pr-[24px]">
-                                </div>
-                                <div class="border-l-[1px] mt-[24px] border-black ml-6 h-100 flex justify-items-end">
-                                    <p class="mt-auto pl-[24px] block text-[14px]">Ощутите радость дарения с нашей современной студии флоры. Закажите онлайн и отправьте растения и подарки сегодня.</p>
-                                </div>
+                            <div class="">
+                                <img src="~/public/img.png" alt="Букеты" class="w-full pt-[24px] pr-[24px]">
                             </div>
+                            <div class="border-l-[1px] mt-[24px] border-black ml-6 h-100 flex justify-items-end">
+                                <p class="mt-auto pl-[24px] block text-[14px]">Ощутите радость дарения с нашей современной студии флоры. Закажите онлайн и отправьте растения и подарки сегодня.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="main-title__right row-span-5 grid gap-[1px] !bg-black">
+            <div class="main-title__right md:row-span-5 grid gap-[1px] !bg-black">
                     <MainCard text="Свежие цветы" card-url="/item.png"  />
                     <MainCard :inverted="true" text="Высушенные цветы" card-url="/item-1.png" />
                     <MainCard text="Живые цветы" card-url="/item-2.png" />
