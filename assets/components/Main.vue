@@ -5,6 +5,10 @@
                     <div class="title-wrap grid grid-rows-2 gap-[1px] bg-black">
                         <div class="main__title-wrap">
                             <Title>Киевские люксовые букеты</Title>
+                            <div v-for="post in posts">
+                                {{ post.fullName }}
+                                {{ post.email }}
+                            </div>
                             <p class="mt-6">Открой для себя уникальные букеты и подарки для любого повода: порадуй всех с <i>нашей онлайн доставкой</i></p>
                         </div>
                         <div class="grid grid-cols-2 border-black">
@@ -144,6 +148,8 @@
         {id: 65465, text: "Another one good review about those flowers. Those flowers are the best and you should buy it, or you'll be dead", author: "Sam"},
         {id: 228, text: "LOrem ipsum dolor sit amet commit another one bite the dust queen lol", author: "John"},
     ])
+
+    const posts = await useFetch("/api/user");
 </script>
 
 <style scoped>
