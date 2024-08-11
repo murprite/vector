@@ -1,5 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module", "@nuxt/icon", "@nuxt/image"],
+  compatibilityDate: '2024-08-08',
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@primevue/nuxt-module",
+    "@nuxt/icon",
+    "@nuxt/image",
+    "@prisma/nuxt"
+  ],
 })
