@@ -1,6 +1,17 @@
 <template>
     <div class="index bg-black grid gap-[1px]">
         <Header />
+        <div class="grid grid-cols-2 gap-[1px] bg-white">
+            <div class="row-span-2">
+                <NuxtImg src="/fresh-flowers.png" class="w-full relative" />
+                <p class="text-[4rem] text-white absolute top-[50%] ">Свежие цветы</p>
+            </div>
+            <div class="">
+                <template v-for="product in products">
+                    <ProductCard :price="product.price" :id="product.id" :img="product.imageUrl" />
+                </template> 
+            </div>
+        </div>
         <Footer />
     </div>
 </template>
@@ -9,6 +20,11 @@
     import Header from '~/assets/shared/Header.vue';
     import Footer from '~/assets/shared/Footer.vue';
 
-    const products = await useFetch("/api/products");
+    import ProductCard from '~/assets/shared/ProductCard.vue';
+
+    const products = await $fetch("/api/products", {
+        query: {type: 1}
+    });
+
 
 </script>
