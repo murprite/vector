@@ -1,14 +1,13 @@
 <template>
     <div class="index bg-black grid gap-[1px]">
         <Header />
-        <div class="grid grid-cols-2 gap-[1px] bg-white">
-            <div class="row-span-2">
-                <NuxtImg src="/fresh-flowers.png" class="w-full relative" />
-                <p class="text-[4rem] text-white absolute top-[50%] ">Свежие цветы</p>
+        <div class="grid grid-cols-2 gap-[1px] bg-black">
+            <div class="row-span-8 bg-[url(/fresh-flowers.png)]">
+                <p class="text-[4rem] text-white text-center">Свежие цветы</p>
             </div>
-            <div class="">
-                <template v-for="product in products">
-                    <ProductCard :price="product.price" :id="product.id" :img="product.imageUrl" />
+            <div class="grid grid-cols-2 row-auto">
+                <template v-if="status !== 'pending'" v-for="product in products">
+                    <ProductCard :price="product.price" :id="product.id" :imageUrl="product.imageUrl.slice(1, product.imageUrl.length)" />
                 </template> 
             </div>
         </div>
@@ -22,9 +21,8 @@
 
     import ProductCard from '~/assets/shared/ProductCard.vue';
 
-    const products = await $fetch("/api/products", {
-        query: {type: 1}
+    const { status, data: products } = await useFetch("/api/products", {
+        query: {flowersType: 1}
     });
-
 
 </script>
