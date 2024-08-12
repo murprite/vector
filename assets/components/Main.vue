@@ -23,10 +23,10 @@
                 </div>
             </div>
             <div class="main-title__right md:row-span-5 grid gap-[1px] !bg-black">
-                    <MainCard text="Свежие цветы" card-url="/item.png"  />
-                    <MainCard :inverted="true" text="Высушенные цветы" card-url="/item-1.png" />
-                    <MainCard text="Живые цветы" card-url="/item-2.png" />
-                    <MainCard :inverted="true" text="Ароматические цветы" card-url="/item-3.png" />
+                    <MainCard text="Свежие цветы" card-url="/item.png" url="/fresh-flowers" />
+                    <MainCard :inverted="true" text="Высушенные цветы" card-url="/item-1.png" url="/dried-flowers" />
+                    <MainCard text="Живые цветы" card-url="/item-2.png" url="/live-flowers" />
+                    <MainCard :inverted="true" text="Ароматические цветы" card-url="/item-3.png" url="/live-flowers" />
             </div>
             <div class="main__about_left p-[80px]">
                 <SubTitle>О нас</SubTitle>    

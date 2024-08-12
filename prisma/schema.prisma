@@ -25,7 +25,16 @@ model product {
   name String
   imageUrl String
   price Int
-
+  
+  //  Types:
+  //  Dried: 0;
+  //  Fresh: 1;
+  //  Live: 2;
+  //  Vases: 3;
+  //  Candles: 4;
+  //  Refreshers: 5;
+  flowersType Int
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
