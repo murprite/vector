@@ -19,7 +19,7 @@ interface Query {
 async function GET(event: any) {
     let query = getQuery<Query>(event);
     
-    // i'm only a human after all don't put your blame on me
+    // don't put your blame on me
     if(query.flowersType) query.flowersType = Number(query.flowersType);
     if(query.price) query.price = Number(query.price);
 

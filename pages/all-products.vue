@@ -1,4 +1,5 @@
 <template>
+    <title>Все товары</title>
     <div class="index bg-black grid gap-[1px]">
         <Header />
         <div class="grid bg-black gap-[1px] grid-cols-1 md:grid-cols-2">
@@ -20,6 +21,6 @@
     import Footer from '~/assets/shared/Footer.vue';
     import MainCard from '~/assets/shared/MainCard.vue';
 
-    const { status, data: products } = await useLazyFetch('/api/products')
+    const { status, data: products } = await useFetch('/api/products');
 
 </script>

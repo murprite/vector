@@ -1,13 +1,14 @@
 <template>
+    <title>Свежие цветы</title>
     <div class="index bg-black grid gap-[1px]">
         <Header />
-        <div class="grid grid-cols-2 gap-[1px] bg-black">
-            <div class="row-span-8 bg-[url(/fresh-flowers.png)]">
-                <p class="text-[4rem] text-white text-center">Свежие цветы</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
+            <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-white">
+                <p class="text-[4rem] text-white text-center my-[260px]">Свежие цветы</p>
             </div>
             <div class="grid grid-cols-2 row-auto">
                 <template v-if="status !== 'pending'" v-for="product in products">
-                    <ProductCard :price="product.price" :id="product.id" :imageUrl="product.imageUrl.slice(1, product.imageUrl.length)" />
+                    <ProductCard :text="product.name" :price="product.price" :id="product.id" :imageUrl="product.imageUrl.slice(1, product.imageUrl.length)" />
                 </template> 
             </div>
         </div>
