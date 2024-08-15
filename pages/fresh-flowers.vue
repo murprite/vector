@@ -6,7 +6,7 @@
             <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-white">
                 <p class="text-[4rem] text-white text-center my-[260px]">Свежие цветы</p>
             </div>
-            <div class="grid grid-cols-2 row-auto">
+            <div class="grid grid-cols-2 gap-[1px] bg-black">
                 <template v-if="status !== 'pending'" v-for="product in products">
                     <ProductCard :text="product.name" :price="product.price" :id="product.id" :imageUrl="product.imageUrl.slice(1, product.imageUrl.length)" />
                 </template> 

@@ -4,7 +4,7 @@
         <NuxtLink :to="'/posts/' + id">
             <Title>{{ title }}</Title>
         </NuxtLink>
-        
+        <NuxtImg :src="'/post-' + id "/>
         <hr>
         <p>{{  text.slice(0, 50)  }}</p>    
         
