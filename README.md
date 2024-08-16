@@ -1,75 +1,28 @@
-# Nuxt 3 Minimal Starter
+# A fullstack project.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Prisma, Nuxt3 were used to create this project.
+Plus few modules like TailwindCSS, PrimeVue
 
-## Setup
-
-Make sure to install the dependencies:
-
+# Init 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
+# Run dev server
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
-
+# Build
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+# Misc
 
 ```bash
-# npm
-npm run preview
+# Get local display of DB (ENV is needed)
+npm run prisma:studio
 
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+# Set remote DB, based on your prisma scheme
+npm run prisma:push
