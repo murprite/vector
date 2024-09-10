@@ -25,6 +25,6 @@
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.0.4",
-    "@prisma/client": "^5.18.0"
+    "@prisma/client": "^5.19.1"
   }
 }
