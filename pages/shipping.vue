@@ -9,6 +9,6 @@
     import Header from '~/assets/shared/Header.vue';
     import Footer from '~/assets/shared/Footer.vue';
 
-    const products = await useFetch("/api/products");
+    const products = await $fetch("/api/products");
 
 </script>

@@ -4,11 +4,7 @@
                 <div class="main-title__left border-b-[1px] border-black pt-[79px] pb-[80px] px-[80px]">
                     <div class="title-wrap grid grid-rows-2 gap-[1px] bg-black">
                         <div class="main__title-wrap">
-                            <Title>Киевские люксовые букеты</Title>
-                            <div v-for="post in posts">
-                                {{ post.fullName }}
-                                {{ post.email }}
-                            </div>
+                            <Title class="text-[3.2rem]">Люксовые букеты</Title>
                             <p class="mt-6">Открой для себя уникальные букеты и подарки для любого повода: порадуй всех с <i>нашей онлайн доставкой</i></p>
                         </div>
                         <div class="grid grid-cols-2 border-black">
@@ -32,9 +28,9 @@
                 <SubTitle>О нас</SubTitle>    
             </div>
             <div class="main__about_right p-[80px]">
-                <p>our story</p>
-                <h3 class="text-[38px] font-bold mt-[16px] mb-[24px]">Киевские люксовые букеты</h3>
-                <p>We are a modern local floral studio, which specializes in the design and delivery of unique bouquets. We have the best florists who carefully select each look, our studio cooperates directly with farms for growing different flowers, so we always have fresh flowers, which are collected by our florists in exquisite bouquets. We have a collection of fresh bouquets, collections of dried bouquets, house plants, as well as fragrant candles from luxury brands to create the perfect atmosphere. Make someone's day amazing by sending flowers, plants and gifts the same or next day. Ordering flowers online has never been easier.</p>
+                <p>О нас</p>
+                <h3 class="text-[3.3rem] font-bold mt-[16px] mb-[24px]">Люксовые букеты</h3>
+                <p>Мы современная местная флористическая студия, которая специализируется на разработке и доставке уникальных букетов. У нас работают лучшие флористы, которые тщательно подбирают каждый образ, наша студия напрямую сотрудничает с хозяйствами по выращиванию разных цветов, поэтому у нас всегда есть свежие цветы, которые наши флористы собирают в изысканные букеты. У нас есть коллекция свежих букетов, коллекции засушенных букетов, комнатных растений, а также ароматные свечи от люксовых брендов для создания идеальной атмосферы. Сделайте чей-то день удивительным, отправив цветы, растения и подарки в тот же или на следующий день. Заказать цветы онлайн еще никогда не было так просто.</p>
                 <button class="border border-black py-[20px] px-[43px] mt-[64px]">Узнать больше</button>
             </div>
             <div class="main__choose_left p-[80px]">
@@ -43,19 +39,19 @@
             <div class="main__choose_right grid grid-rows-4 gap-[1px] !bg-black">
                 <div class="main__choose_option p-[80px]">
                     <h3 class="text-[38px]">Стиль флористов</h3>
-                    <p>At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available. We stay up-to-date with the latest floral design trends and offer unique arrangements that are sure to impress. Let us brighten up your day with our stunning bouquets and same-day delivery service.</p>
+                    <p>В нашей цветочной студии профессиональные флористы создают самые элегантные и стильные букеты, используя только самые свежие и качественные материалы. Мы следим за последними тенденциями цветочного дизайна и предлагаем уникальные композиции, которые обязательно произведут впечатление. Позвольте нам украсить ваш день нашими потрясающими букетами и службой доставки в тот же день.</p>
                 </div>
                 <div class="main__choose_option p-[80px]">
                     <h3 class="text-[38px]">Доставка вовремя</h3>
-                    <p>At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available. We stay up-to-date with the latest floral design trends and offer unique arrangements that are sure to impress. Let us brighten up your day with our stunning bouquets and same-day delivery service.</p>
+                    <p>В нашей цветочной студии профессиональные флористы создают самые элегантные и стильные букеты, используя только самые свежие и качественные материалы. Мы следим за последними тенденциями цветочного дизайна и предлагаем уникальные композиции, которые обязательно произведут впечатление. Позвольте нам украсить ваш день нашими потрясающими букетами и службой доставки в тот же день.</p>
                 </div>
                 <div class="main__choose_option p-[80px]">
                     <h3 class="text-[38px]">Безопасная оплата</h3>
-                    <p>At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available. We stay up-to-date with the latest floral design trends and offer unique arrangements that are sure to impress. Let us brighten up your day with our stunning bouquets and same-day delivery service.</p>
+                    <p>В нашей цветочной студии профессиональные флористы создают самые элегантные и стильные букеты, используя только самые свежие и качественные материалы. Мы следим за последними тенденциями цветочного дизайна и предлагаем уникальные композиции, которые обязательно произведут впечатление. Позвольте нам украсить ваш день нашими потрясающими букетами и службой доставки в тот же день.</p>
                 </div>
                 <div class="main__choose_option p-[80px]">
                     <h3 class="text-[38px]">Подписка для ваших нужд</h3>
-                    <p>At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available. We stay up-to-date with the latest floral design trends and offer unique arrangements that are sure to impress. Let us brighten up your day with our stunning bouquets and same-day delivery service.</p>
+                    <p>В нашей цветочной студии профессиональные флористы создают самые элегантные и стильные букеты, используя только самые свежие и качественные материалы. Мы следим за последними тенденциями цветочного дизайна и предлагаем уникальные композиции, которые обязательно произведут впечатление. Позвольте нам украсить ваш день нашими потрясающими букетами и службой доставки в тот же день.</p>
                 </div>
             </div>
             <div class="main__contact grid gap-[1px] !bg-black">
@@ -63,16 +59,16 @@
                         <SubTitle>Связаться с нами</SubTitle>
                         <p class="mt-[24px] mb-[16px]">Мы рассмотрим вашу заявку</p>
                         <form class="main__contact_input flex">
-                            <input type="phone" class="px-[15px] py-[20px] border text-gray mr-[16px] outline-0" placeholder="+380 XX XXX XX XX" >
+                            <input type="phone" class="px-[15px] py-[20px] border text-gray mr-[16px] outline-0" placeholder="+786 XX XXX XX XX" >
                             <button class="px-[80px] py-[20px] text-white bg-black">Записаться</button>
                         </form>
                     </div>
-                    <div class="grid grid-rows-3 grid-cols-2 gap-[1px] !bg-black">
-                        <p class="bg-white py-[16px] text-center">phone</p>
-                        <p class="bg-white py-[16px] text-center">address</p>
+                    <div id="contacts" class="grid grid-rows-3 grid-cols-2 gap-[1px] !bg-black">
+                        <p class="bg-white py-[16px] text-center pt-auto pb-auto flex justify-center items-center"><b>Телефоны</b></p>
+                        <p class="bg-white py-[16px] text-center pt-auto pb-auto flex justify-center items-center"><b>Адреса</b></p>
                         <div class=" !bg-white flex flex-col justify-center items-center row-span-2">
-                            <p>88005553535</p>
-                            <p>88005553535</p>
+                            <p>+786545421876</p>
+                            <p>+786545421876</p>
                         </div>
                         <div class=" !bg-white flex flex-col justify-center items-center row-span-2">
                             <p>Открыт с 8:00 до 23:00</p>
@@ -141,15 +137,16 @@
 
     import backgroundUrl from "~/public/wedding_img.png";
     
-    // TODO: fetch rewiews from google api
+    // TODO: fetch rewiews from DB, or leave it fixed
 
     const products = ref([
         {id: 1488, text: "Those flowers are the best. I'll buy it later again", author: "Jeff"},
         {id: 65465, text: "Another one good review about those flowers. Those flowers are the best and you should buy it, or you'll be dead", author: "Sam"},
         {id: 228, text: "LOrem ipsum dolor sit amet commit another one bite the dust queen lol", author: "John"},
     ])
+    
+    
 
-    const posts = await useFetch("/api/user");
 </script>
 
 <style scoped>
@@ -157,4 +154,7 @@
         background: white;
     }
     
+    * {
+        scroll-behavior: smooth;
+    }
 </style>

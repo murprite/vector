@@ -1,5 +1,5 @@
 <template>
-    <title>Киевские букеты</title>
+    <title>Люксовые букеты</title>
     <div class="index bg-black grid gap-[1px]">
         <Header />
         <Main />

@@ -1,3 +1,4 @@
+import Aura from '@primevue/themes/aura';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -7,6 +8,6 @@ export default defineNuxtConfig({
     "@primevue/nuxt-module",
     "@nuxt/icon",
     "@nuxt/image",
-    "@prisma/nuxt"
+    "@prisma/nuxt",
   ],
 })

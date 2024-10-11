@@ -15,6 +15,6 @@
     import Header from '~/assets/shared/Header.vue';
     import Footer from '~/assets/shared/Footer.vue';
 
-    const {status, data: posts} = await useFetch("/api/posts");
+    const {status, data: posts} = await $fetch("/api/posts");
 
 </script>

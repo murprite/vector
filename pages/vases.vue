@@ -3,12 +3,12 @@
     <div class="index bg-black grid gap-[1px]">
         <Header />
         <div class="grid grid-cols-2 gap-[1px] bg-black">
-            <div class="row-span-8 bg-[url(/fresh-flowers.png)]">
-                <p class="text-[4rem] text-white text-center">Освежители воздуха</p>
+            <div class="row-span-8 bg-[url(/fresh-flowers.png)] bg-no-repeat">
+                <p class="text-[4rem] text-white text-center">Дизайнерские вазы</p>
             </div>
-            <div class="grid grid-cols-2 row-auto">
+            <div class="grid grid-cols-2 row-auto gap-[1px]">
                 <template v-if="status !== 'pending'" v-for="product in products">
-                    <ProductCard :price="product.price" :id="product.id" :imageUrl="product.imageUrl.slice(1, product.imageUrl.length)" />
+                    <ProductCard :product />
                 </template> 
             </div>
         </div>
@@ -22,8 +22,8 @@
 
     import ProductCard from '~/assets/shared/ProductCard.vue';
 
-    const products = await useFetch("/api/products", {
-        query: {flowersType: 1}
+    const {status, data: products} = await useFetch("/api/products", {
+        query: {flowersType: 3}
     });
 
 </script>
