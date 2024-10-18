@@ -49,7 +49,7 @@ async function getRecommendedProducts() {
 }
 
 function updateCart() {
-    if(!userChoice.value) {
+    if(!userChoice.value && quantity >= 1) {
         activateErrorPopup();
         return;
     }
@@ -62,7 +62,16 @@ function updateCart() {
 
 }
 
-const quantity = defineModel({default: 1});
+function changeQuantity(currentQuantity) {
+    if(currentQuantity <= 0) {
+        quantity.value = 0;
+    }
+    return;
+}
+
+let quantity = defineModel('quantity', {
+    default: 0,
+});
 const userChoice = defineModel('userChoice');
 
 </script>
@@ -88,9 +97,9 @@ const userChoice = defineModel('userChoice');
                     <div class="main__quantity flex items-center">
                         <span class="font-bold mr-[15px]">Количество</span>
                         <div class="quantityController flex items-center my-[15px]">
-                            <button @click="() => quantity > 0 ? quantity-- : quantity">-</button>
-                            <input class="w-[50px]" type="number" v-model="quantity">
-                            <button @click="() => quantity++">+</button>
+                            <button @click="() => changeQuantity(--quantity)">-</button>
+                            <input class="w-[50px]" type="number" v-model="quantity" @input="(val) => val.target.value = +val.target.value">
+                            <button @click="() => changeQuantity(++quantity)">+</button>
                         </div>
                     </div>
                     <div class="main__recommendation">
@@ -166,5 +175,8 @@ const userChoice = defineModel('userChoice');
         height: 45px;
         outline: 0;
         font-size: 1rem;
+    }
+    input {
+        outline: 0;
     }
 </style>

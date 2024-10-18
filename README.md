@@ -24,5 +24,5 @@ npm run build
 # Get local display of DB (ENV is needed)
 npm run prisma:studio
 
-# Set remote DB, based on your prisma scheme
+# Push new scheme to remote DB (resets all data)
 npm run prisma:push
