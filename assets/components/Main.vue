@@ -59,8 +59,8 @@
                         <SubTitle>Связаться с нами</SubTitle>
                         <p class="mt-[24px] mb-[16px]">Мы рассмотрим вашу заявку</p>
                         <form class="main__contact_input flex">
-                            <input type="phone" class="px-[15px] py-[20px] border text-gray mr-[16px] outline-0" placeholder="+786 XX XXX XX XX" >
-                            <button class="px-[80px] py-[20px] text-white bg-black">Записаться</button>
+                            <input type="phone" @input="(e) => handleValidation(e, /\+7\d{10}/)" class="px-[15px] py-[20px] border text-gray mr-[16px] outline-0" placeholder="+7XXX-XXX-XX-XX" maxlength="12">
+                            <button class="px-[80px] py-[20px] text-white bg-black" @click="(e) => sendTicket(e)">Записаться</button>
                         </form>
                     </div>
                     <div id="contacts" class="grid grid-rows-3 grid-cols-2 gap-[1px] !bg-black">
@@ -137,15 +137,37 @@
 
     import backgroundUrl from "~/public/wedding_img.png";
     
-    // TODO: fetch rewiews from DB, or leave it fixed
+    // TODO: fetch rewiews from DB, or leave it like that
+    function handleValidation(e, regexp) {
+        let elem = e.target;
+        let currentValue = e.target.value;
+        let regex = new RegExp(regexp);
+        console.log(regex.test(currentValue))
+        if(!regex.test(currentValue)) {
+            elem.style.border = "1px solid red";
+        } else {
+            elem.style.border = "1px solid gray";
+        }
 
+        console.log("changed value")
+    }
+
+    
     const products = ref([
         {id: 1488, text: "Those flowers are the best. I'll buy it later again", author: "Jeff"},
         {id: 65465, text: "Another one good review about those flowers. Those flowers are the best and you should buy it, or you'll be dead", author: "Sam"},
         {id: 228, text: "LOrem ipsum dolor sit amet commit another one bite the dust queen lol", author: "John"},
     ])
     
-    
+
+    function sendTicket(e) {
+        e.preventDefault();
+        if(!phone.value) return;
+
+        console.log(phone.value);
+        // TODO: send it on some mail;
+        
+    }
 
 </script>
 

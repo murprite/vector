@@ -2,7 +2,7 @@
   <footer id="footer" class="grid grid-cols-2  md:grid-cols-4 gap-[1px] bg-black border-t-1 border-black">
     <div class="footer__email flex flex-col justify-center items-center p-[40px]">
       <p>Remember to offer beautiful flowers from Kyiv LuxeBouquets Valentines Day, Mothers Day, Christmas... Reminds you 7 days before. No spam or sharing your address</p>
-      <input type="email" placeholder="Your Email" class="border outline-0 text-gray-50 w-full py-[20px] px-[16px] mt-[24px] mb-[16px]">
+      <input type="email" @input="(e) => handleValidation(e, /[a-zA-z]+@[a-zA-z]+\.[a-zA-z]+/)" placeholder="Your Email" class="border outline-0 w-full py-[20px] px-[16px] mt-[24px] mb-[16px]">
       <button class="px-[80px] py-[20px] text-white bg-black">Записаться</button>
     </div>
     <div class="footer__contact p-[40px] flex flex-col justify-center">
@@ -57,6 +57,20 @@
 
 <script setup>
   import SubTitle from './SubTitle.vue';
+
+  function handleValidation(e, regexp) {
+        let elem = e.target;
+        let currentValue = e.target.value;
+        let regex = new RegExp(regexp);
+        console.log(regex.test(currentValue))
+        if(!regex.test(currentValue)) {
+            elem.style.border = "1px solid red";
+        } else {
+            elem.style.border = "1px solid gray";
+        }
+
+        console.log("changed value")
+    }
 </script>
 <style>
   Footer > * {
