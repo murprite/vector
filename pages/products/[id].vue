@@ -18,23 +18,25 @@ definePageMeta({
 let { data: product } = await useFetch(`/api/products?id=${id}`, {
     method: "GET",
 });
-
-// TODO: add to database category column and refactor... a lot
 product = product.value[0];
-product.category = "Свежие цветы";
 
 let recommendedProducts = await getRecommendedProducts();
 
 
-function getCategoryLink(category) {
-    switch(category) {
-        case "Свежие цветы":
-            return "/fresh-flowers";
-        case "Высушенные цветы":
-            return "/fresh-flowers";
-        case "Живые цветы":
-            return "/fresh-flowers";
-
+function getCategoryLink(flowersType) {
+    switch(flowersType) {
+        case 0:
+            return ["Высушенные цветы", "/dried-flowers"];
+        case 1:
+            return ["Свежие цветы", "/fresh-flowers"];
+        case 2:
+            return ["Ароматические цветы", "/live-flowers"];
+        case 3:
+            return ["Вазы", "/dried-flowers"];
+        case 4:
+            return ["Свечи", "/candles"];
+        case 5:
+            return ["Освежители", "/refreshers"];
     }
 }
 function getRandomType() {
@@ -63,30 +65,35 @@ function updateCart() {
 }
 
 function changeQuantity(currentQuantity) {
-    if(currentQuantity <= 0) {
-        quantity.value = 0;
+    if(currentQuantity <= 1) {
+        quantity.value = 1;
     }
     return;
 }
 
 let quantity = defineModel('quantity', {
-    default: 0,
+    default: 1,
 });
-const userChoice = defineModel('userChoice');
+const userChoice = defineModel('userChoice', {
+    default: '0',
+    get(val) {
+        return +val;
+    }
+});
 
 </script>
 
 <template>
-    <title>{{ product.name + userChoice }}</title>
+    <title>{{ product.name }}</title>
     <div class="wrapper grid gap-[1px] bg-black">
         <Header />
             <main class="grid grid-cols-2 bg-black gap-[1px]">
-                <div class="main__image w-100">
-                    <NuxtImg :src="product.images" :alt="product.name" class="w-[100%]"></NuxtImg>
+                <div class="main__image relative w-100 max-h-[100vh] !bg-gray">
+                    <NuxtImg :src="product.images" :alt="product.name" class=""></NuxtImg>
                 </div>
                 <div class="main__info p-[40px] flex flex-col justify-between">
                     <div class="main__breadcrumbs uppercase">
-                        <NuxtLink :to="getCategoryLink(product.category)">{{ product.category }}</NuxtLink> / <span class="text-gray">{{ product.name }}</span>
+                        <NuxtLink :to="getCategoryLink(product.flowersType)[1]">{{ getCategoryLink(product.flowersType)[0] }}</NuxtLink> / <span class="text-gray">{{ product.name }}</span>
                     </div>
                     <div class="main__title">
                         <Title class="text-[2rem] my-[5px]">{{ product.name }} - {{ product.price }}₽</Title>
@@ -98,7 +105,7 @@ const userChoice = defineModel('userChoice');
                         <span class="font-bold mr-[15px]">Количество</span>
                         <div class="quantityController flex items-center my-[15px]">
                             <button @click="() => changeQuantity(--quantity)">-</button>
-                            <input class="w-[50px]" type="number" v-model="quantity" @input="(val) => val.target.value = +val.target.value">
+                            <input class="w-[50px]" type="number" v-model="quantity" @input="(val) => val.target.value = ++val.target.value">
                             <button @click="() => changeQuantity(++quantity)">+</button>
                         </div>
                     </div>
@@ -133,7 +140,7 @@ const userChoice = defineModel('userChoice');
                         <b>Дополнительные опции</b>
                         <form class="my-[10px]">
                             <div class="">
-                                <input type="radio" id="radioBuyOnce" name="userChoice" value="0" v-model="userChoice" class="mr-[30px]">
+                                <input type="radio" checked id="radioBuyOnce" name="userChoice" value="0" v-model="userChoice" class="mr-[30px]">
                                 <label for="radioBuyOnce">Единовременная покупка</label>
                             </div>
 
@@ -178,5 +185,12 @@ const userChoice = defineModel('userChoice');
     }
     input {
         outline: 0;
+    }
+
+    .main__image img {
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%,0);
     }
 </style>

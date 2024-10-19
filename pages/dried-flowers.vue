@@ -1,20 +1,22 @@
 <template>
     <title>Высушенные цветы</title>
-    <div class="index bg-black grid gap-[1px]">
+    <div class="index bg-black grid">
         <Header />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px]">
-            <div class="bg-no-repeat relative bg-white">
-                <NuxtImg src="./fresh-flowers.png"  class="w-full" />
-                <p class="text-[4rem] text-white absolute top-0 text-center my-[260px]">Высушенные цветы</p>
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-cover bg-white">
+                <p class="text-[4rem] text-white text-center my-[260px]">Высушенные цветы</p>
             </div>
-            <div class="grid grid-cols-2 gap-[1px]">
+            <div class="grid grid-cols-2 gap-[1px] bg-white">
                 <template v-if="status !== 'pending'" v-for="product in products">
                     <ProductCard :product />
-                </template> 
+                </template>
+                <template v-else>
+                    <div class="bg-white"></div>
+                </template>
             </div>
         </div>
         <Footer />
-    </div>
+    </div>  
 </template>
 
 <script setup>

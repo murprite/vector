@@ -3,12 +3,12 @@
     <div class="footer__email flex flex-col justify-center items-center p-[40px]">
       <p>Remember to offer beautiful flowers from Kyiv LuxeBouquets Valentines Day, Mothers Day, Christmas... Reminds you 7 days before. No spam or sharing your address</p>
       <input type="email" @input="(e) => handleValidation(e, /[a-zA-z]+@[a-zA-z]+\.[a-zA-z]+/)" placeholder="Your Email" class="border outline-0 w-full py-[20px] px-[16px] mt-[24px] mb-[16px]">
-      <button class="px-[80px] py-[20px] text-white bg-black">Записаться</button>
+      <button class="px-[80px] py-[20px] text-white bg-black" @click="(e) => sendEmail(e)">Записаться</button>
     </div>
     <div class="footer__contact p-[40px] flex flex-col justify-center">
       <p class="text-gray-500 text-[18px] mb-[24px]">Контакты</p>
       <p class="text-gray-500">Адрес</p>
-      <p class="mb-[24px]">15/4 Boulevard Street, New York</p>
+      <p class="mb-[24px]">15/4 Boulevard Of Broken Dreams, New York</p>
       <p class="text-gray-500">Телефон</p>
       <p class="mb-[12px]">+786545421876</p>
       <p class="mb-[24px]">+786545421876</p>
@@ -58,6 +58,8 @@
 <script setup>
   import SubTitle from './SubTitle.vue';
 
+  const isEmailVerif = ref(false);
+
   function handleValidation(e, regexp) {
         let elem = e.target;
         let currentValue = e.target.value;
@@ -65,11 +67,19 @@
         console.log(regex.test(currentValue))
         if(!regex.test(currentValue)) {
             elem.style.border = "1px solid red";
+            isEmailVerif = false;
         } else {
+            isEmailVerif = true;
             elem.style.border = "1px solid gray";
         }
-
-        console.log("changed value")
+    }
+    function sendEmail(e) {
+      e.preventDefault();
+      if(!isEmailVerif) {
+        return;
+      }
+      
+    
     }
 </script>
 <style>
