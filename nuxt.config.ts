@@ -10,4 +10,11 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@prisma/nuxt",
   ],
+  primevue: {
+    options: {
+      theme: {
+        preset: Aura
+      }
+    }
+  }
 })

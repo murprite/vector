@@ -9,12 +9,28 @@
     </div>
     <div class="h-[80px] col-span-6 md:col-span-4"></div>
     <div class="col-span-2 hidden grid-cols-2 gap-[1px] !bg-black md:grid">
-      <Button class="bg-white">Вход</Button>
+      <Button class="bg-white" @click="authPopup = !authPopup">Вход</Button>
       <Button class="bg-white">Корзина</Button>
     </div>
     <button class="slider__mobile flex md:hidden items-center justify-center" @click="isProfileOpen = !isProfileOpen">
       <NuxtImg src="./nav-right.svg" width="32" height="32" />
     </button>
+
+    <Dialog v-model:visible="authPopup" modal header="Вхд в профиль" :style="{ width: '25rem' }">
+      <span class="text-surface-500 dark:text-surface-400 block mb-8">Логин и пароль для входа.</span>
+      <div class="flex items-center gap-4 mb-4">
+          <label for="username" class="font-semibold w-24">Логин</label>
+          <input id="username" class="flex-auto outline-none" @input="(e) => currentUserName = e.target.value" autocomplete="off" />
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+          <label for="password" class="font-semibold w-24">Пароль</label>
+          <input id="password" type="password" class="flex-auto outline-none" @input="(e) => currentPass = e.target.value" autocomplete="off" />
+      </div>
+      <div class="flex justify-end gap-2">
+          <Button type="button" label="Отмена" severity="secondary" @click="authPopup = false">Отмена</Button>
+          <Button type="button" label="Войти" @click="(e) => validateAuthButton(e)">Войти</Button>
+      </div>
+  </Dialog>
   </header>
   <Drawer position="left" v-model:visible="isMenuOpen" :showCloseIcon="false">
     <div class="Menu bg-white h-[100vh] border-black border-r-[1px] p-[5px] relative">
@@ -63,10 +79,44 @@
 </style>
 <script setup>
     import Drawer from 'primevue/drawer';
+    import Dialog from 'primevue/dialog';
+
     import Button from './Button.vue';
     import Title from './Title.vue';
 
-    const isMenuOpen = ref(false);
-    const isProfileOpen = ref(false);
+    let isMenuOpen = ref(false);
+    let isProfileOpen = ref(false);
+    let authPopup = ref(false);
+
+    const currentPass = ref("");
+    const currentUserName = ref("");
+
+    async function validateAuthButton(e) {
+      authPopup = false;
+
+      const pass = hashPass(currentPass);
+      const userName = currentUserName; 
+      const jsonBody = JSON.stringify({
+          username: userName.value,
+          pass: pass.value,
+      });
+
+      console.log(jsonBody)
+      let jwt = await $fetch("api/login", {
+        method: "POST",
+        body: jsonBody,
+      })
+      if(!jwt) {
+        alert("failed")
+      } else {
+        alert("accepted")
+        localStorage.setItem("jwt-luxflowers", jwt);
+      }
+    }
+    function hashPass(pass) {
+      // TODO: some hash func
+      return pass;
+    }
+
 
 </script>
