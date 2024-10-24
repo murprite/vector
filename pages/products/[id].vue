@@ -75,7 +75,7 @@ let quantity = defineModel('quantity', {
     default: 1,
 });
 const userChoice = defineModel('userChoice', {
-    default: '0',
+    default: '1',
     get(val) {
         return +val;
     }
@@ -85,11 +85,12 @@ const userChoice = defineModel('userChoice', {
 
 <template>
     <title>{{ product.name }}</title>
-    <div class="wrapper grid gap-[1px] bg-black">
+    <div class="wrapper grid gap-[1px] bg-black bg-[url]">
         <Header />
             <main class="grid grid-cols-2 bg-black gap-[1px]">
-                <div class="main__image relative w-100 max-h-[100vh] !bg-gray">
-                    <NuxtImg :src="product.images" :alt="product.name" class=""></NuxtImg>
+                <div class="main__image max-h-[80vh] relative w-100 overflow-hidden">
+                    <div class="main__image_bg absolute w-[120%] h-[120%]" :style="`background-image: url('../${product.images}') !important`"></div>
+                    <NuxtImg :src="product.images" :alt="product.name" class="w-auto"></NuxtImg>
                 </div>
                 <div class="main__info p-[40px] flex flex-col justify-between">
                     <div class="main__breadcrumbs uppercase">
@@ -114,11 +115,11 @@ const userChoice = defineModel('userChoice', {
                             <span class="font-bold">Хорошо сочетается с:</span>
                             <span class="font-gray">Ваза не входит в комплеткт</span>
                         </div>
-                        <div class="reviews__wrapper mt-[15px] flex text-[24px]">
+                        <div class="reviews__wrapper mt-[15px] flex w-full text-[24px]">
                             <Carousel :value="recommendedProducts" :numVisible="5" :numScroll="2">
                                     <template #item="slotProps">
                                         <NuxtLink :to="'/products/' + slotProps.data.id">
-                                            <div class="border border-surface-200 dark:border-surface-700 rounded mx-1">
+                                            <div class="border border-surface-200 dark:border-surface-700 rounded mx-1 h-[200px] w-[150px]">
                                                 <div class="mb-4">
                                                     <div class="relative mx-auto">
                                                         <NuxtImg :src="'/' + slotProps.data.cardImageUrl" :alt="slotProps.data.name" class="rounded" />
@@ -186,11 +187,19 @@ const userChoice = defineModel('userChoice', {
     input {
         outline: 0;
     }
-
+    .main__image_bg {
+        filter: blur(5px);
+        background-size: cover;
+        background-position: center;
+        left: -5%;
+        top: -5%;
+        
+    }
     .main__image img {
         height: 100%;
         position: absolute;
         left: 50%;
         transform: translate(-50%,0);
+        z-index: 2;
     }
 </style>
