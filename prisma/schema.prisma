@@ -9,11 +9,12 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
 
   fullName String
   email    String
   pass     String
+  isAdmin  Boolean
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -27,6 +28,7 @@ model product {
   images          String
   price           Int
   description     String
+  
 
   //  Types:
   //  Dried: 0;

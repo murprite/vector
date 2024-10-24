@@ -88,7 +88,7 @@ const userChoice = defineModel('userChoice', {
     <div class="wrapper grid gap-[1px] bg-black bg-[url]">
         <Header />
             <main class="grid grid-cols-2 bg-black gap-[1px]">
-                <div class="main__image max-h-[80vh] relative w-100 overflow-hidden">
+                <div class="main__image h-[90vh] relative w-100 overflow-hidden">
                     <div class="main__image_bg absolute w-[120%] h-[120%]" :style="`background-image: url('../${product.images}') !important`"></div>
                     <NuxtImg :src="product.images" :alt="product.name" class="w-auto"></NuxtImg>
                 </div>
