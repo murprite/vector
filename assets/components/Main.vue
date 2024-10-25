@@ -28,7 +28,6 @@
                 <SubTitle>О нас</SubTitle>    
             </div>
             <div class="main__about_right p-[80px]">
-                <p>О нас</p>
                 <h3 class="text-[3.3rem] font-bold mt-[16px] mb-[24px]">Люксовые букеты</h3>
                 <p>Мы современная местная флористическая студия, которая специализируется на разработке и доставке уникальных букетов. У нас работают лучшие флористы, которые тщательно подбирают каждый образ, наша студия напрямую сотрудничает с хозяйствами по выращиванию разных цветов, поэтому у нас всегда есть свежие цветы, которые наши флористы собирают в изысканные букеты. У нас есть коллекция свежих букетов, коллекции засушенных букетов, комнатных растений, а также ароматные свечи от люксовых брендов для создания идеальной атмосферы. Сделайте чей-то день удивительным, отправив цветы, растения и подарки в тот же или на следующий день. Заказать цветы онлайн еще никогда не было так просто.</p>
                 <button class="border border-black py-[20px] px-[43px] mt-[64px]">Узнать больше</button>
@@ -137,7 +136,7 @@
 
     import backgroundUrl from "~/public/wedding_img.png";
     
-    // TODO: fetch rewiews from DB, or leave it like that
+    // TODO: fetch rewiews from DB/google/someothershit, or leave it like that
     function handleValidation(e, regexp) {
         let elem = e.target;
         let currentValue = e.target.value;
@@ -165,7 +164,7 @@
         if(!phone.value) return;
 
         console.log(phone.value);
-        // TODO: send it on some mail;
+        // TODO: send it at some mail;
         
     }
 

@@ -96,23 +96,26 @@
 
       const pass = hashPass(currentPass);
       const userName = currentUserName; 
-      const jsonBody = JSON.stringify({
+
+      const body = JSON.stringify({
           username: userName.value,
           pass: pass.value,
       });
 
-      console.log(jsonBody)
-      let jwt = await $fetch("api/login", {
+      
+
+      let response = JSON.parse(await $fetch("/api/login", {
         method: "POST",
-        body: jsonBody,
-      })
-      if(!jwt) {
-        alert("failed")
+        body
+      }));
+      
+      if(response.jwt) {
+        localStorage.setItem("jwt-luxflowers", response.jwt)
       } else {
-        alert("accepted")
-        localStorage.setItem("jwt-luxflowers", jwt);
+        alert(response.error);
       }
     }
+
     function hashPass(pass) {
       // TODO: some hash func
       return pass;
