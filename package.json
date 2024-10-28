@@ -8,6 +8,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "authserver": "nuxt start --port 3001",
     "postinstall": "nuxt prepare",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio"

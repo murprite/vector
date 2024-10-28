@@ -1,7 +1,15 @@
 <template>
   <footer id="footer" class="grid grid-cols-2  md:grid-cols-4 gap-[1px] bg-black border-t-1 border-black">
     <div class="footer__email flex flex-col justify-center items-center p-[40px]">
-      <p>Remember to offer beautiful flowers from Kyiv LuxeBouquets Valentines Day, Mothers Day, Christmas... Reminds you 7 days before. No spam or sharing your address</p>
+      <p>
+        Erst wenn die Wolken schlafen gehen
+        kann man uns am Himmel sehen.
+          Wir haben Angst und sind allein.
+          Gott weiß, ich will kein Engel sein.
+          Sie leben hinterm Sonnenschein,
+          getrennt von uns unendlich weit.
+        Sie müssen sich an Sterne krallen
+      </p>
       <input type="email" @input="(e) => handleValidation(e, /[a-zA-z]+@[a-zA-z]+\.[a-zA-z]+/)" placeholder="Your Email" class="border outline-0 w-full py-[20px] px-[16px] mt-[24px] mb-[16px]">
       <button class="px-[80px] py-[20px] text-white bg-black" @click="(e) => sendEmail(e)">Записаться</button>
     </div>

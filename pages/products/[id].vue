@@ -5,6 +5,8 @@ import Footer from '~/assets/shared/Footer.vue';
 import Title from '~/assets/shared/Title.vue';
 
 import Carousel from 'primevue/carousel';
+import prisma from '~/lib/prisma';
+import ProductCard from '~/assets/shared/ProductCard.vue';
 
 const route = useRoute()
 const id = route.params.id;
@@ -62,6 +64,14 @@ function updateCart() {
 
     console.log(userOptions)
 
+}
+
+async function getRecommendationCards() {
+    const cards = await prisma.product.findMany();
+
+    return cards.map((val, ind) => {
+        if(Math.random() * 10 >= 1) return val;
+    });
 }
 
 function changeQuantity(currentQuantity) {
@@ -153,6 +163,14 @@ const userChoice = defineModel('userChoice', {
                     </div>
                     <div class="main__order">
                         <button @click="() => updateCart()" class="w-[100%] bg-black text-white py-[20px] ">Добавить в корзину</button>
+                    </div>
+                </div>
+                <div class="main__recommendations">
+                    <div class="">
+                        Вам также могут понравится...
+                    </div>
+                    <div class="main__recommendation_card">
+                        <ProductCard v-for="card in getRecommendationCards()" :product="card" />
                     </div>
                 </div>
             </main>

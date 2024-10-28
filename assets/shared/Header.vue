@@ -16,20 +16,25 @@
       <NuxtImg src="./nav-right.svg" width="32" height="32" />
     </button>
 
-    <Dialog v-model:visible="authPopup" modal header="Вхд в профиль" :style="{ width: '25rem' }">
-      <span class="text-surface-500 dark:text-surface-400 block mb-8">Логин и пароль для входа.</span>
-      <div class="flex items-center gap-4 mb-4">
-          <label for="username" class="font-semibold w-24">Логин</label>
-          <input id="username" class="flex-auto outline-none" @input="(e) => currentUserName = e.target.value" autocomplete="off" />
-      </div>
-      <div class="flex items-center gap-4 mb-8">
-          <label for="password" class="font-semibold w-24">Пароль</label>
-          <input id="password" type="password" class="flex-auto outline-none" @input="(e) => currentPass = e.target.value" autocomplete="off" />
-      </div>
-      <div class="flex justify-end gap-2">
-          <Button type="button" label="Отмена" severity="secondary" @click="authPopup = false">Отмена</Button>
-          <Button type="button" label="Войти" @click="(e) => validateAuthButton(e)">Войти</Button>
-      </div>
+    <Dialog v-model:visible="authPopup" modal header="Вход в профиль" :style="{ width: '25rem' }">
+      <template v-if="currentStatus !== 'loading'">
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">Логин и пароль для входа.</span>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="username" class="font-semibold w-24">Логин</label>
+            <input id="username" class="flex-auto outline-none" @input="(e) => currentUserName = e.target.value" autocomplete="off" />
+        </div>
+        <div class="flex items-center gap-4 mb-8">
+            <label for="password" class="font-semibold w-24">Пароль</label>
+            <input id="password" type="password" class="flex-auto outline-none" @input="(e) => currentPass = e.target.value" autocomplete="off" />
+        </div>
+        <div class="flex justify-end gap-2">
+            <Button type="button" label="Отмена" severity="secondary" @click="authPopup = false">Отмена</Button>
+            <Button type="button" label="Войти" @click="(e) => validateAuthButton(e)">Войти</Button>
+        </div>
+      </template>
+      <template v-else>
+        <ProgressSpinner class="mx-auto my-5"/>
+      </template>
   </Dialog>
   </header>
   <Drawer position="left" v-model:visible="isMenuOpen" :showCloseIcon="false">
@@ -80,6 +85,7 @@
 <script setup>
     import Drawer from 'primevue/drawer';
     import Dialog from 'primevue/dialog';
+    import ProgressSpinner from 'primevue/progressspinner';
 
     import Button from './Button.vue';
     import Title from './Title.vue';
@@ -90,9 +96,10 @@
 
     const currentPass = ref("");
     const currentUserName = ref("");
+    const currentStatus = ref("ready");
 
     async function validateAuthButton(e) {
-      authPopup = false;
+      currentStatus.value = "loading";
 
       const pass = hashPass(currentPass);
       const userName = currentUserName; 
@@ -103,17 +110,20 @@
       });
 
       
-
-      let response = JSON.parse(await $fetch("/api/login", {
+      let response = await $fetch("/api/login", {
         method: "POST",
         body
-      }));
-      
-      if(response.jwt) {
-        localStorage.setItem("jwt-luxflowers", response.jwt)
-      } else {
+      }).finally((res) => {
+        currentStatus.value = "ready";
+      });
+
+      if(response.error) {
         alert(response.error);
+        return;
       }
+
+      localStorage.setItem("jwt-luxflowers", response.jwt)
+      localStorage.setItem("jwt-luxflowers-expire", response.expire)    
     }
 
     function hashPass(pass) {
