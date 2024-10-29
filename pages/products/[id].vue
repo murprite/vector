@@ -173,7 +173,7 @@ const userChoice = defineModel('userChoice', {
                         <ProductCard v-for="card in getRecommendationCards()" :product="card" />
                     </div>
                 </div>
-            </main>
+            </main> 
             <Footer />
     </div>
 </template>
