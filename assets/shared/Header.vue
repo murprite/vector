@@ -9,10 +9,15 @@
     </div>
     <div class="h-[80px] col-span-6 md:col-span-4"></div>
     <div class="col-span-2 hidden grid-cols-2 gap-[1px] !bg-black md:grid">
-      <Button class="bg-white" @click="authPopup = !authPopup">Вход</Button>
+      <template v-if="() => !getUserJwt()">
+        <Button type="button" label="Войти" @click="(e) => authPopup = !authPopup" class="bg-white">Войти</Button>
+      </template>
+      <template v-else>
+        <Button type="button" label="Кабинет" @click="(e) => navigateTo('/cabinet')" class="bg-white">Кабинет</Button>
+      </template>
       <Button class="bg-white">Корзина</Button>
     </div>
-    <button class="slider__mobile flex md:hidden items-center justify-center" @click="isProfileOpen = !isProfileOpen">
+    <button class="slider__mobile flex md:hidden items-center !bg-black justify-center" @click="isProfileOpen = !isProfileOpen">
       <NuxtImg src="./nav-right.svg" width="32" height="32" />
     </button>
 
@@ -98,6 +103,8 @@
     const currentUserName = ref("");
     const currentStatus = ref("ready");
 
+    let userJwt = useCookie("luxflowers-jwt");
+
     async function validateAuthButton(e) {
       currentStatus.value = "loading";
 
@@ -118,12 +125,20 @@
       });
 
       if(response.error) {
-        alert(response.error);
+        showPopup(response.error);
         return;
       }
 
-      localStorage.setItem("jwt-luxflowers", response.jwt)
-      localStorage.setItem("jwt-luxflowers-expire", response.expire)    
+      userJwt.value = {jwt: response.jwt};
+      userJwt.maxAge = response.expire;
+
+      reloadNuxtApp();
+    }
+    
+    function getUserJwt() {
+      let userJwt = useCookie('luxflowers-jwt');
+      console.log(userJwt.value);
+      return userJwt.value;
     }
 
     function hashPass(pass) {

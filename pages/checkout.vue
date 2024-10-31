@@ -94,9 +94,9 @@
             <span>{{ getTotalPrice(products) }}</span>
           </div>
         </div>
-        <div class="" v-else>
+        <div class="class text-center" v-else>
           <Title>У вас нет товаров в корзине</Title>
-          <Title>Посетить магазин</Title>
+          <Title><NuxtLink to="/">Посетить магазин</NuxtLink></Title>
         </div>
       </div>
     </main>
@@ -131,23 +131,12 @@
   });
 
   const currentItem = ref("0");
+
   let products = useCookie("cart", {
     default: () => ({cart: []})
   }).value.cart;
 
   console.log(products)
-  
-  
-  async function getUserCart() {
-    let localProducts = [];
-    try {
-      localProducts = await JSON.parse(localStorage.getItem("luxflowers-cart"));
-    } catch(e) {
-      localStorage.setItem("luxflowers-cart", JSON.stringify([]));
-      return [];
-    }
-    return localProducts;
-  }
 
   function changeItem(item) {
     currentItem.value = item;

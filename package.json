@@ -8,7 +8,6 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "authserver": "nuxt start --port 3001",
     "postinstall": "nuxt prepare",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio"
@@ -24,6 +23,8 @@
     "nuxt-primevue": "^3.0.0",
     "primevue": "^4.0.4",
     "prisma": "^5.18.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
     "vue": "latest"
   },
   "devDependencies": {
