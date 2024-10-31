@@ -7,9 +7,9 @@
       <Button class="bg-white" to="/">Магазин</Button>
       <Button class="bg-white" to="#footer">Контакты</Button>
     </div>
-    <div class="h-[80px] col-span-6 md:col-span-4"></div>
+    <div class="h-[80px] col-span-6 md:col-span-4"></div>   
     <div class="col-span-2 hidden grid-cols-2 gap-[1px] !bg-black md:grid">
-      <template v-if="() => !getUserJwt()">
+      <template v-if="!isUserHavingJwt()">
         <Button type="button" label="Войти" @click="(e) => authPopup = !authPopup" class="bg-white">Войти</Button>
       </template>
       <template v-else>
@@ -134,11 +134,9 @@
 
       reloadNuxtApp();
     }
-    
-    function getUserJwt() {
+    function isUserHavingJwt() {
       let userJwt = useCookie('luxflowers-jwt');
-      console.log(userJwt.value);
-      return userJwt.value;
+      return userJwt.value !== undefined;
     }
 
     function hashPass(pass) {

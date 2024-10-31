@@ -4,8 +4,8 @@ interface Query {
     id?: number;
     name?:     string;
     cardImageUrl?: string;
-    price?: Number;
-    images?: String;
+    price?: number;
+    images?: string;
 
     //  Types:
     //  Dried: 0;
@@ -14,7 +14,7 @@ interface Query {
     //  Vases: 3;
     //  Candles: 4;
     //  Refreshers: 5
-    flowersType?: Number;
+    flowersType?: number;
 }
   
 
