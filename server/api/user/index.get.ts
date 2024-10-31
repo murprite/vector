@@ -1,17 +1,15 @@
-import prisma from "@/lib/prisma";
+import prisma from "~/lib/prisma";
+
 interface Query {
-    jwt: string
-}
-async function GET(event: any) {
-    const body = getQuery<Query>(event);
-    const users = await prisma.user.findMany({where: {
-        jwt: body.jwt
-    }});
-    if(users[0]) {
-        return users[0];
-    } else {
-        throw createError("There's no such user")
-    }
+  jwt: string
 }
 
-export default defineEventHandler( async (event) => GET(event))
+export default defineEventHandler(async (event) => {
+  const params = getQuery<Query>(event);
+
+  return await prisma.user.findFirst({
+    where: {
+      jwt: params.jwt
+    }
+  });
+})

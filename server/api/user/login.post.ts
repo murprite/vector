@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
   const unsigned = `${base64URLencode(header)}.${base64URLencode(payload)}`;
   const signature = HS256(unsigned, SECRET_KEY);
-  
+  console.log({ "jwt": base64URLencode(header) + '.' + base64URLencode(payload) + '.' + signature, "expire": (Date.now() + 60 * 5) - Date.now()})
   return { "jwt": base64URLencode(header) + '.' + base64URLencode(payload) + '.' + signature, "expire": (Date.now() + 60 * 5) - Date.now()};
 });
 

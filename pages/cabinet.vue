@@ -47,13 +47,15 @@
 
   const selectedItem = ref("cart");
   const userInput = ref("");
+  
   const cart = useCookie('cart');
   const userJwt = useCookie('luxflowers-jwt');
-
+  
   if(userJwt.value.jwt === undefined || userJwt.value.jwt === null) {
+    console.log("don't wave")
     navigateTo("/");
   }
-
+  
   let {data: currentUser, status} = await (useFetch('/api/user', {
     method: 'GET',
     params: {

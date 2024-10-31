@@ -20,8 +20,36 @@
     <button class="slider__mobile flex md:hidden items-center !bg-black justify-center" @click="isProfileOpen = !isProfileOpen">
       <NuxtImg src="./nav-right.svg" width="32" height="32" />
     </button>
-
+    <Message class="mb-[10px] fixed top-[-80%] left-[50%] translate-x-[-50%]" v-if="errorMessageShown" severity="error" :life="errorMessageLife">{{ errorMessageText }}</Message>
+    <Dialog v-model:visible="registerPopup" modal header="Регистрация" :style="{ width: '30rem' }">
+      <template v-if="currentStatus !== 'loading'">
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">Регистрация пользователя.</span>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="regusername" class="font-semibold w-24">Ваш логин</label>
+            <input id="regusername" class="flex-auto outline-none" @input="(e) => registerUserData.login = e.target.value" autocomplete="off" />
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="email" class="font-semibold w-24">Ваша почта</label>
+            <input id="email" class="flex-auto outline-none" @input="(e) => registerUserData.email = e.target.value" autocomplete="off" />
+        </div>
+        <div class="flex items-center gap-4 mb-8">
+            <label for="password" class="font-semibold w-24">Пароль</label>
+            <input id="password" type="password" class="flex-auto outline-none" @input="(e) => registerUserData.pass = e.target.value" autocomplete="off" />
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="valpassword" class="font-semibold w-24">Повторите пароль</label>
+            <input id="valpassword" type="password" class="flex-auto outline-none" @input="(e) => registerUserData.validPass = e.target.value" autocomplete="off" />
+        </div>
+        <div class="flex justify-end gap-2">
+            <Button type="button" label="Войти" @click="(e) => sendRegistration(registerUserData)">Зарегистрироваться</Button>
+        </div>
+      </template>
+      <template v-else>
+        <ProgressSpinner class="mx-auto my-5"/>
+      </template>
+  </Dialog>
     <Dialog v-model:visible="authPopup" modal header="Вход в профиль" :style="{ width: '25rem' }">
+      <Message class="mb-[10px] fixed top-[-80%] left-[50%] translate-x-[-50%]" v-if="errorMessageShown" severity="error" :life="errorMessageLife">{{ errorMessageText }}</Message>
       <template v-if="currentStatus !== 'loading'">
         <span class="text-surface-500 dark:text-surface-400 block mb-8">Логин и пароль для входа.</span>
         <div class="flex items-center gap-4 mb-4">
@@ -33,7 +61,7 @@
             <input id="password" type="password" class="flex-auto outline-none" @input="(e) => currentPass = e.target.value" autocomplete="off" />
         </div>
         <div class="flex justify-end gap-2">
-            <Button type="button" label="Отмена" severity="secondary" @click="authPopup = false">Отмена</Button>
+            <Button type="button" label="Регистрация" severity="secondary" @click="registerUser()">Регистрация</Button>
             <Button type="button" label="Войти" @click="(e) => validateAuthButton(e)">Войти</Button>
         </div>
       </template>
@@ -91,6 +119,7 @@
     import Drawer from 'primevue/drawer';
     import Dialog from 'primevue/dialog';
     import ProgressSpinner from 'primevue/progressspinner';
+    import Message from 'primevue/message';
 
     import Button from './Button.vue';
     import Title from './Title.vue';
@@ -98,12 +127,57 @@
     let isMenuOpen = ref(false);
     let isProfileOpen = ref(false);
     let authPopup = ref(false);
+    let registerPopup = ref(false);
+
+    let errorMessageLife = 3000;
+    let errorMessageText = ref("");
+    let errorMessageShown = ref(false);
 
     const currentPass = ref("");
     const currentUserName = ref("");
     const currentStatus = ref("ready");
 
+    const registerUserData = reactive({
+      login: '',
+      pass: '',
+      validPass: '',
+      email: '',
+    })
+
     let userJwt = useCookie("luxflowers-jwt");
+
+    function showErrorPopup(err) {
+      errorMessageShown.value = true;
+      errorMessageText.value = err;
+
+      setTimeout(() => {
+        errorMessageShown.value = false;
+      }, errorMessageLife);
+    } 
+
+    function registerUser() {
+      isMenuOpen.value = false;
+      authPopup.value = false;
+      isProfileOpen.value = false;
+
+      registerPopup.value = true;
+    }
+
+    async function sendRegistration(user) {
+      if(user.pass !== user.validPass) {
+        showErrorPopup("Пароли не совпадают");
+        return;
+      }
+      const response = await $fetch("api/user/register", {
+        method: 'POST',
+        body: user
+      });
+
+      const userJwt = useCookie("luxflowers-jwt");
+      userJwt.value = {jwt: response.jwt, expire: response.expire};
+
+      reloadNuxtApp('');
+    }
 
     async function validateAuthButton(e) {
       currentStatus.value = "loading";
@@ -117,7 +191,7 @@
       });
 
       
-      let response = await $fetch("/api/login", {
+      let response = await $fetch("/api/user/login", {
         method: "POST",
         body
       }).finally((res) => {
@@ -125,7 +199,7 @@
       });
 
       if(response.error) {
-        showPopup(response.error);
+        showErrorPopup(response.error);
         return;
       }
 
