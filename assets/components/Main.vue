@@ -1,5 +1,5 @@
 <template>
-    <main class="Main font-montserrat md:grid flex flex-col grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
+    <main class="Main text-black font-montserrat md:grid flex flex-col grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
             <div class="main__title_wrapper md:row-span-5">
                 <div class="main-title__left border-b-[1px] border-black pt-[79px] pb-[80px] px-[80px]">
                     <div class="title-wrap grid grid-rows-2 gap-[1px] bg-black">

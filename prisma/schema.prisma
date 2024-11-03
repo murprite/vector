@@ -24,12 +24,11 @@ model User {
 model product {
   id Int @id @default(autoincrement())
 
-  name            String
-  cardImageUrl    String
-  images          String
-  price           Int
-  description     String
-  
+  name         String
+  cardImageUrl String
+  images       String
+  price        Int
+  description  String
 
   //  Types:
   //  Dried: 0;

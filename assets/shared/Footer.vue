@@ -1,5 +1,5 @@
 <template>
-  <footer id="footer" class="grid grid-cols-2  md:grid-cols-4 gap-[1px] bg-black border-t-1 border-black">
+  <footer id="footer" class="grid grid-cols-2 text-black md:grid-cols-4 gap-[1px] bg-black border-t-1 border-black">
     <div class="footer__email flex flex-col justify-center items-center p-[40px]">
       <p>
         Erst wenn die Wolken schlafen gehen
