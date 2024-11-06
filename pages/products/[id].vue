@@ -5,7 +5,6 @@ import Footer from '~/assets/shared/Footer.vue';
 import Title from '~/assets/shared/Title.vue';
 
 import Carousel from 'primevue/carousel';
-import prisma from '~/lib/prisma';
 import ProductCard from '~/assets/shared/ProductCard.vue';
 
 const route = useRoute()
@@ -23,6 +22,7 @@ let { data: product } = await useFetch(`/api/products?id=${id}`, {
 product = product.value[0];
 
 let recommendedProducts = await getRecommendedProducts();
+let recommendedCards = await getRecommendationCards();
 
 
 function getCategoryLink(flowersType) {
@@ -49,7 +49,7 @@ async function getRecommendedProducts() {
     let apiString = isVasesPage ? `/api/products?flowersType=${getRandomType()}` : `/api/products?flowersType=3`;
 
     let { data: recommended } = await useFetch(apiString);
-    return await recommended;
+    return recommended;
 }
 
 function updateCart() {
@@ -63,17 +63,23 @@ function updateCart() {
         quantity: quantity.value,
     }
     let cart = useCookie("cart");
+    let cartHasItem = false;
     if(cart.value === undefined) cart.value = [];
-
-    console.log(cart)
-    cart.value.push(userOptions);
+    
+    cart.value.forEach(element => {
+        if(element.choice.id === product.id) {
+            cartHasItem = true;
+            element.quantity += userOptions.quantity;
+        }
+        return;
+    });
+    if(!cartHasItem) cart.value.push(userOptions);
+    console.log(cart.value);
 }
 
 async function getRecommendationCards() {
-    const cards = await prisma.product.findMany();
-
-    return cards.map((val, ind) => {
-        if(Math.random() * 10 >= 1) return val;
+    return await $fetch("/api/products/random", {
+        method: "GET"
     });
 }
 
@@ -102,7 +108,7 @@ const userChoice = defineModel('userChoice', {
         <Header />
             <main class="grid grid-cols-2 bg-black gap-[1px]">
                 <div class="main__image h-[90vh] relative w-100 overflow-hidden">
-                    <div class="main__image_bg absolute w-[120%] h-[120%]" :style="`background-image: url('../${product.images}') !important`"></div>
+                    <div class="main__image_bg absolute w-[120%] h-[120%]" :style="`background-image: url('../../${product.images}') !important`"></div>
                     <NuxtImg :src="product.images" :alt="product.name" class="w-auto"></NuxtImg>
                 </div>
                 <div class="main__info p-[40px] flex flex-col justify-between">
@@ -168,12 +174,12 @@ const userChoice = defineModel('userChoice', {
                         <button @click="() => updateCart()" class="w-[100%] bg-black text-white py-[20px] ">Добавить в корзину</button>
                     </div>
                 </div>
-                <div class="main__recommendations">
-                    <div class="">
+                <div class="main__recommendations grid col-span-2">
+                    <div class="py-[80px] text-center text-[1.8rem] font-semibold border border-black border-t-0">
                         Вам также могут понравится...
                     </div>
-                    <div class="main__recommendation_card">
-                        <ProductCard v-for="card in getRecommendationCards()" :product="card" />
+                    <div class="main__recommendation_card flex">
+                        <ProductCard v-for="card in recommendedCards" :product="card" />
                     </div>
                 </div>
             </main> 

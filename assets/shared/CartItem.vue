@@ -10,9 +10,9 @@
                 
             </div>
             <div class="CardItem__count flex flex-col ml-auto align-top">
-                <b class="text-right">Цена: {{ price }}</b>
+                <b class="text-right">Цена: {{ price }}₽</b>
                 <p class="my-[10px]">Количество: {{ count }} ({{ price * count}}₽)</p>
-                <button class="w-full border mb-[15px] hover:bg-black transition p-[5px] text-center bottom-0 right-0 hover:text-white">Удалить</button>
+                <button class="w-full border mb-[15px] hover:bg-black transition p-[5px] text-center bottom-0 right-0 hover:text-white" @click="$emit('removeCartItem', id)">Удалить</button>
 
             </div>
         </div>

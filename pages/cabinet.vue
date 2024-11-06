@@ -87,7 +87,7 @@
             </div>
             <div class="" v-else>
               {{ console.log(cart) }}
-              <CartItem :product="product.choice" :count="product.quantity" v-for="product in cart"/>
+              <CartItem :product="product.choice" :count="product.quantity" v-for="product in cart" @remove-cart-item="removeItemCart"/>
             </div>
            </ClientOnly>
           </div>
@@ -144,15 +144,17 @@
         }
       });
 
-      console.log("deleting")
-
       cart.value = undefined;
       userJwt.value = undefined;
       navigateTo('/');
     }
     return;
   }
-
+  function removeItemCart(id) {
+    cart.value = cart.value.filter(val => {
+      return val.choice.id !== id
+    });
+  }
   function exitProfile() {
     useCookie('luxflowers-jwt').value = undefined;
     return navigateTo('/')
