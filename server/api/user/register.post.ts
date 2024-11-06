@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
       id: userId,
       email: body.email,
       fullName: body.login,
-      pass: body.pass,
+      pass: crypto.hash('sha512', body.pass),
       isAdmin: false,
       jwt,
     }

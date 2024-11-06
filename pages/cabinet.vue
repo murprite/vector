@@ -9,7 +9,8 @@
           <div class="flex flex-col items-start">
             <button class="w-full text-left border mt-[15px] hover:bg-black transition p-[15px] hover:text-white" @click="() => selectedItem = 'profile'">Настроить профиль</button>
             <button class="w-full text-left border my-[15px] hover:bg-black transition p-[15px] hover:text-white" @click="() => selectedItem = 'cart'">Посмотреть корзину</button>
-            <button class="w-full text-left border hover:bg-black transition p-[15px] hover:text-white" @click="() => selectedItem = 'delete'">Удалить профиль</button>
+            <button class="w-full text-left border mb-[15px] hover:bg-black transition p-[15px] hover:text-white" @click="() => exitProfile()">Выйти из профиля</button>
+            <button class="w-full text-left hover:bg-black transition p-[15px] hover:text-white" @click="() => selectedItem = 'delete'">Удалить профиль</button>
           </div>
         </div>
         <div class="main__right p-[30px]">
@@ -79,10 +80,16 @@
             <button class="w-full border border-black p-[15px] bg-red transition hover:bg-red-500 hover:border-red-500 hover:text-white" @click="() => deleteAccount(userInput)">Удалить свой аккаунт</button>
           </div>
           <div class="" v-else-if="selectedItem === 'cart'">
+           <ClientOnly >
             <Title>Корзина</Title>
-            <div class="text-center" v-if="cart.length === 0">
+            <div class="text-center" v-if="cart === undefined || cart.length === 0">
               <p class="">asdads</p>
             </div>
+            <div class="" v-else>
+              {{ console.log(cart) }}
+              <CartItem :product="product.choice" :count="product.quantity" v-for="product in cart"/>
+            </div>
+           </ClientOnly>
           </div>
           <div class="" v-else>Выберите нужную для вас опцию</div>
         </div>
@@ -102,6 +109,7 @@
   import Footer from '~/assets/shared/Footer.vue';
   import Header from '~/assets/shared/Header.vue';
   import Title from '~/assets/shared/Title.vue';
+  import CartItem from '~/assets/shared/CartItem.vue';
 
   const selectedCategory = ref("");
   const selectedItem = ref("cart");
@@ -109,12 +117,12 @@
   let cart = [];
 
   onMounted(() => {
-    cart = useCookie('cart', {
-      default: []
-    }).value;
+    cart = useCookie('cart');
+    if(!cart) cart.value = [];
   });
+
   const userJwt = useCookie('luxflowers-jwt');
-  
+
   if(userJwt.value.jwt === undefined || userJwt.value.jwt === null) {
     console.log("don't wave")
     navigateTo("/");
@@ -143,6 +151,11 @@
       navigateTo('/');
     }
     return;
+  }
+
+  function exitProfile() {
+    useCookie('luxflowers-jwt').value = undefined;
+    return navigateTo('/')
   }
 
 </script>

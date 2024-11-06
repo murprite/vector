@@ -15,7 +15,7 @@
       <template v-else>
         <Button type="button" label="Кабинет" @click="(e) => navigateTo('/cabinet')" class="bg-white">Кабинет</Button>
       </template>
-      <Button class="bg-white">Корзина</Button>
+      <Button class="bg-white" @click="() => openCart()">Корзина</Button>
     </div>
     <button class="slider__mobile flex md:hidden items-center !bg-black justify-center" @click="isProfileOpen = !isProfileOpen">
       <NuxtImg src="./nav-right.svg" width="32" height="32" />
@@ -212,7 +212,18 @@
       let userJwt = useCookie('luxflowers-jwt');
       return userJwt.value !== undefined;
     }
+    async function openCart() {
+      let jwt = useCookie("luxflowers-jwt");
+      if(!jwt.value) {
+        authPopup.value = true;
+      }
 
+      let {data: response} = await $fetch("api/user", {
+        method: "GET"
+      });
+      
+      if(response) return navigateTo("/cabinet");
+    }
     function hashPass(pass) {
       // TODO: some hash func
       return pass;

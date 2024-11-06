@@ -57,13 +57,16 @@ function updateCart() {
         activateErrorPopup();
         return;
     }
+
     let userOptions = {
-        choice: userChoice.value,
+        choice: product,
         quantity: quantity.value,
     }
+    let cart = useCookie("cart");
+    if(cart.value === undefined) cart.value = [];
 
-    console.log(userOptions)
-
+    console.log(cart)
+    cart.value.push(userOptions);
 }
 
 async function getRecommendationCards() {
