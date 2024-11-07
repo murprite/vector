@@ -1,11 +1,8 @@
 import prisma from "~/lib/prisma";
-
-interface Query {
-  jwt: string
-}
+import { IUserJWT } from "~/assets/constants/constants";
 
 export default defineEventHandler(async (event) => {
-  const params = getQuery<Query>(event);
+  const params = getQuery<IUserJWT>(event);
 
   return await prisma.user.findFirst({
     where: {

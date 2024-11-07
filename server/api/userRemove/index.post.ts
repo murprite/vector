@@ -1,18 +1,15 @@
 import prisma from "~/lib/prisma";
-
-interface Query {
-  jwt: string
-}
+import { IUserJWT, ERRORS } from "~/assets/constants/constants";
 
 async function POST(event: any) {
-    let body: Query = await readBody(event);
+    let body = await readBody<IUserJWT>(event);
     let user = await prisma.user.deleteMany({
       where: {
         jwt: body.jwt
       }
     });
     if(user.count === 0) {
-      return { status: "failed" };
+      return ERRORS.NO_USER;
     }
     return { status: "success" };
 }

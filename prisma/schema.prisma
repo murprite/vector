@@ -11,6 +11,7 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
+  login    String
   fullName String
   email    String
   pass     String
@@ -21,7 +22,7 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model product {
+model Product {
   id Int @id @default(autoincrement())
 
   name         String
@@ -29,15 +30,20 @@ model product {
   images       String
   price        Int
   description  String
-
-  //  Types:
-  //  Dried: 0;
-  //  Fresh: 1;
-  //  Live: 2;
-  //  Vases: 3;
-  //  Candles: 4;
-  //  Refreshers: 5;
   flowersType Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+
+  title String
+  text String
+  annotation String
+  imagesUrl String
+  mainImageUrl String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

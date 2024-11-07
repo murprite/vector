@@ -5,7 +5,7 @@
     <main class="grid grid-cols-2 bg-black gap-[1px] my-[1px] min-h-[80vh]">
       <template class="" v-if="status === 'success'">
         <div class="main__left p-[30px]">
-          <Title>Добро пожаловать в личный кабинет, {{ currentUser.fullName }}!</Title>
+          <Title>Добро пожаловать в личный кабинет, {{ currentUser.login }}!</Title>
           <div class="flex flex-col items-start">
             <button class="w-full text-left border mt-[15px] hover:bg-black transition p-[15px] hover:text-white" @click="() => selectedItem = 'profile'">Настроить профиль</button>
             <button class="w-full text-left border my-[15px] hover:bg-black transition p-[15px] hover:text-white" @click="() => selectedItem = 'cart'">Посмотреть корзину</button>
@@ -50,7 +50,7 @@
               <div class="" v-else-if="selectedCategory === 'name'">
                 <p>Вы можете указать своё собственное имя, которое будет отображаться публично и в вашем профиле. Также вы можете поменять свой логин, по которому вы можете зайти в свой личный кабинет</p>
                 <div class="flex flex-col mt-[15px]">
-                  <p class="mb-[15px]">Ваше текущее имя: {{ currentUser.name === undefined ? currentUser.fullName : currentUser.name }}</p>
+                  <p class="mb-[15px]">Ваше текущее имя: {{ currentUser.name === undefined ? currentUser.login : currentUser.name }}</p>
                   <label for="changeName" class="mb-[10px]"><b>Введите своё новое имя</b></label>
                   <input type="text" id="changeName" class="outline-none border-gray-400 border p-[15px]" placeholder="">
                 </div>
@@ -75,7 +75,7 @@
           <div class="" v-else-if="selectedItem === 'delete'">
             <Title class="mb-[15px]">Удаление профиля</Title>
             <p class="mb-[15px]">Вы уверены что вы хотите удалить профиль? <b>Действие является необратимым</b>. Если по какой-либо причине вам будет необходимо восстановить свой аккаунт, напишите на почту luxflowers@gmail.com</p>
-            <p>Напишите <b>{{ currentUser.fullName }}</b> для удаления аккаунта в поле ввода</p>
+            <p>Напишите <b>{{ currentUser.login }}</b> для удаления аккаунта в поле ввода</p>
             <input type="text" @input="(e) => userInput = e.target.value" class="my-[15px] border-gray-500 border outline-none w-full p-[15px]">
             <button class="w-full border border-black p-[15px] bg-red transition hover:bg-red-500 hover:border-red-500 hover:text-white" @click="() => deleteAccount(userInput)">Удалить свой аккаунт</button>
           </div>
@@ -83,7 +83,8 @@
            <ClientOnly >
             <Title>Корзина</Title>
             <div class="text-center" v-if="cart === undefined || cart.length === 0">
-              <p class="">asdads</p>
+              <p class="">У вас пустая корзина</p>
+              <NuxtLink to="/"><b>За покупками</b></NuxtLink>
             </div>
             <div class="" v-else>
               {{ console.log(cart) }}
@@ -136,7 +137,7 @@
   }));
 
   async function deleteAccount(confirm) {
-    if(confirm === currentUser.value.fullName) {
+    if(confirm === currentUser.value.login) {
       const user = await $fetch('/api/userRemove', {
         method: 'POST',
         body: {

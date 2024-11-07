@@ -1,6 +1,6 @@
 <template>
     <title>Свечи</title>
-    <div class="index bg-black grid gap-[1px]">
+    <div class="index bg-black grid gap-[1px]" v-if="status !== 'pending' && products.length !== 0">
         <Header />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
             <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-white">
@@ -14,6 +14,9 @@
         </div>
         <Footer />
     </div>
+    <template v-else>
+        <Empty />
+    </template>
 </template>
 
 <script setup>
@@ -21,6 +24,7 @@
     import Footer from '~/assets/shared/Footer.vue';
 
     import ProductCard from '~/assets/shared/ProductCard.vue';
+import Empty from '~/assets/shared/Empty.vue';
 
     const { status, data: products } = await $fetch("/api/products", {
         query: {flowersType: 1}

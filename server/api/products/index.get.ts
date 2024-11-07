@@ -1,34 +1,11 @@
 import prisma from "~/lib/prisma";
-
-interface Query {
-    id?: number;
-    name?:     string;
-    cardImageUrl?: string;
-    price?: number;
-    images?: string;
-
-    //  Types:
-    //  Dried: 0;
-    //  Fresh: 1;
-    //  Live: 2;
-    //  Vases: 3;
-    //  Candles: 4;
-    //  Refreshers: 5
-    flowersType?: number;
-}
-  
+import { IProductQuery } from "~/assets/constants/constants";
 
 async function GET(event: any) {
-    let query = getQuery<Query>(event);
-
-    // don't put your blame on me
-    if(query.flowersType) query.flowersType = Number(query.flowersType);
-    if(query.price) query.price = Number(query.price);
-    if(query.id) query.id = Number(query.id);
-
+    let query = getQuery<IProductQuery>(event);
+    query.flowersType = Number(query.flowersType);
     const products = Object.keys(query).length !== 0 ? await prisma.product.findMany({ where: query }) : await prisma.product.findMany();
     return products;
 }
-
 
 export default defineEventHandler(async (event) => GET(event));

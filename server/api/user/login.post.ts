@@ -1,23 +1,19 @@
 import prisma from "~/lib/prisma";
 import crypto from "crypto";
-
-const SECRET_KEY = "example"; // as6UG54qsg kinda test key, y'know?
-const NO_USER = { error: "There's no such user" };
-const NO_BODY = { error: "No payload" };
-const BAD_JSON = { error: "Bad JSON" };
+import { ERRORS, SECRET_KEY } from "~/assets/constants/constants";
 
 export default defineEventHandler(async (event) => {
   let body: JSONUser = await readBody(event);
   
-  if(!body) return NO_USER;
-  if(!body.username || !body.pass) return BAD_JSON;
+  if(!body) return ERRORS.NO_USER;
+  if(!body.username || !body.pass) return ERRORS.BAD_JSON;
 
   const users = await prisma.user.findMany({ where: {
     fullName: body.username,
     pass: body.pass,
   }});
   if(users.length === 0) {
-    return NO_USER;
+    return ERRORS.NO_USER;
   }
   
   const header = JSON.stringify({ "alg": "HS256", "typ": "JWT" })

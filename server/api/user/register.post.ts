@@ -1,13 +1,6 @@
 import prisma from "~/lib/prisma";
 import crypto from "crypto";
-
-const SECRET_KEY = "example";
-
-interface UserRegisterData {
-  email: string,
-  login: string,
-  pass: string
-}
+import { SECRET_KEY, IUserRegisterData } from "~/assets/constants/constants";
 
 function HS256(payload: string, secretKey: string) {
   return crypto.createHmac('sha256', secretKey).update(payload).digest('base64url');
@@ -18,7 +11,7 @@ function base64URLencode(str: string) {
 }
 
 export default defineEventHandler(async (event) => {
-  let body: UserRegisterData = await readBody(event);
+  let body: IUserRegisterData = await readBody(event);
   
   // check if user exists
   const userCount = await prisma.user.count({where: {
