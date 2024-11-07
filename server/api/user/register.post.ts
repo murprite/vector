@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   // check if user exists
   const userCount = await prisma.user.count({where: {
     email: body.email,    
-    fullName: body.login
+    login: body.login
   }});
 
   if(userCount !== 0) {
@@ -36,9 +36,10 @@ export default defineEventHandler(async (event) => {
     data: {
       id: userId,
       email: body.email,
-      fullName: body.login,
+      login: body.login,
       pass: crypto.hash('sha512', body.pass),
       isAdmin: false,
+      fullName: '',
       jwt,
     }
   });

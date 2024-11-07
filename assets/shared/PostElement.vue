@@ -5,9 +5,9 @@
             <Title class="text-[2.2rem]">{{ title }}</Title>
         </NuxtLink>
         <hr>
-        <NuxtImg :src="mainImageUrl" class="my-[15px] max-h-[300px] max-w-[50vw] PostElement__img relative" />
+        <NuxtImg :src="mainImageUrl" class="my-[15px] max-h-[300px] max-w-[50vw] PostElement__img relative mb-[30px]" />
         <hr>
-        <p class="text-[1.2rem]">{{ annotation }}</p>   
+        <p class="text-[1.2rem] mt-[30px]">{{ annotation }}</p>   
         <div class="flex justify-between my-[15px]">
             <p class="text-gray-500 text-right">Статья написана {{ createdAt }}</p>
         </div>

@@ -52,22 +52,22 @@
                 <div class="flex flex-col mt-[15px]">
                   <p class="mb-[15px]">Ваше текущее имя: {{ currentUser.name === undefined ? currentUser.login : currentUser.name }}</p>
                   <label for="changeName" class="mb-[10px]"><b>Введите своё новое имя</b></label>
-                  <input type="text" id="changeName" class="outline-none border-gray-400 border p-[15px]" placeholder="">
+                  <input type="text" id="changeName" class="outline-none border-gray-400 border p-[15px]" placeholder="" v-model="fullName">
                 </div>
                 <div class="flex flex-col my-[15px]">
                   <label for="currentPass" class="mb-[10px]"><b>Введите пароль</b></label>
-                  <input type="password" id="currentPass" class="outline-none border-gray-400 border p-[15px]" placeholder="">
+                  <input type="password" id="currentPass" class="outline-none border-gray-400 border p-[15px]" placeholder="" v-model="pass">
                 </div>
                 <hr>
                 <div class="flex flex-col mt-[15px]">
                   <label for="changeLogin" class="mb-[10px]"><b>Введите свой новый логин</b></label>
-                  <input type="text" id="changeLogin" class="outline-none border-gray-400 border p-[15px]" placeholder="">
+                  <input type="text" id="changeLogin" class="outline-none border-gray-400 border p-[15px]" placeholder="" v-model="login">
                 </div>
                 <div class="flex flex-col my-[15px]">
-                  <label for="currentPass" class="mb-[10px]"><b>Введите пароль</b></label>
-                  <input type="password" id="currentPass" class="outline-none border-gray-400 border p-[15px]" placeholder="">
+                  <label for="currentPassLogin" class="mb-[10px]"><b>Введите пароль</b></label>
+                  <input type="password" id="currentPassLogin" class="outline-none border-gray-400 border p-[15px]" placeholder="" v-model="pass">
                 </div>
-                <button class="w-full text-center hover:bg-black transition p-[15px] hover:text-white border" @click="() => selectedCategory = 'pass'"><b>Применить</b></button>
+                <button class="w-full text-center hover:bg-black transition p-[15px] hover:text-white border" @click="() => changeUserData()"><b>Применить</b></button>
 
               </div>
             </div>
@@ -115,6 +115,11 @@
   const selectedCategory = ref("");
   const selectedItem = ref("cart");
   const userInput = ref("");
+
+  const pass = defineModel("pass");
+  const login = defineModel("login");
+  const fullName = defineModel("fullName");
+
   let cart = [];
 
   onMounted(() => {
@@ -135,6 +140,14 @@
       jwt: userJwt.value.jwt
     }
   }));
+
+  function changeUserData(data) {
+    if(pass.value === currentUser.pass) {
+      
+    } 
+
+    selectedCategory = 'pass';
+  }
 
   async function deleteAccount(confirm) {
     if(confirm === currentUser.value.login) {
