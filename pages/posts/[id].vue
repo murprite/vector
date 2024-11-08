@@ -4,7 +4,6 @@ import Header from '~/assets/shared/Header.vue';
 import Footer from '~/assets/shared/Footer.vue';
 import Empty from '~/assets/shared/Empty.vue';
 import Title from '~/assets/shared/Title.vue';
-import PickList from 'primevue/picklist';
 
 const id = useRoute().params.id;
 const {status, data: post} = await useFetch("/api/posts/getPostByID", {

@@ -62,16 +62,16 @@
       <div class="main__right py-[40px] px-[80px]">
         <span class="uppercase font-bold">Итог заказа</span>
         <div class="products">
-          <div class="product" v-for="product in products">
-            <NuxtImg :src="product.cardImageUrl"/>
+          <div class="product" v-if="cart.value !== undefined" v-for="product in cart.value">
+            <NuxtImg :src="product.choice.cardImageUrl"/>
             <div class="">
-              {{ product.name }}
-              <div class="">{{ product.quantity }}</div>
+              {{ product.choice.name }}
+              <div class="">{{ product.choice.quantity }}</div>
             </div>
-            <div class="">${{ product.price }}</div>
+            <div class="">${{ product.choice.price }}</div>
           </div>
         </div>
-        <div class="" v-if="products.length !== 0">
+        <div class="" v-if="cart.value.length !== 0">
           <div class="border-left-1">
             Если у вас имеется промокод, введите его, чтобы получить скидку
             <div class="">
@@ -82,7 +82,7 @@
           <div class="">
             <div class="">
               <span>Цена:</span>
-              <span>{{ getTotalPrice(products) }}</span>
+              <span>{{ getTotalPrice(cart) }}</span>
             </div>
             <div class="">
               <span>Доставка:</span>
@@ -91,7 +91,7 @@
           </div>
           <div class="main__total">
             <span>Всего:</span>
-            <span>{{ getTotalPrice(products) }}</span>
+            <span>{{ getTotalPrice(cart) }}</span>
           </div>
         </div>
         <div class="class text-center" v-else>
@@ -132,22 +132,22 @@
 
   const currentItem = ref("0");
 
-  let products = useCookie("cart", {
-    default: () => ({cart: []})
-  }).value.cart;
+  let cart = ref();
 
-  console.log(products)
+  onMounted(() => {
+    cart.value = useCookie('cart');
+    if(!cart) cart.value = [];
+  });
 
   function changeItem(item) {
     currentItem.value = item;
     console.log(currentItem);  
   }
   
-  function getTotalPrice(products) {
-    for(let k in products) {
-      
-    }
-    return 100;
+  function getTotalPrice(cart) {
+    return cart.value.reduce((acc, val) => {
+      return acc + Number( val.choice.price * val.quantity);
+    }, 0);
   }
 </script>
 
