@@ -79,16 +79,22 @@
             <input type="text" @input="(e) => userInput = e.target.value" class="my-[15px] border-gray-500 border outline-none w-full p-[15px]">
             <button class="w-full border border-black p-[15px] bg-red transition hover:bg-red-500 hover:border-red-500 hover:text-white" @click="() => deleteAccount(userInput)">Удалить свой аккаунт</button>
           </div>
-          <div class="" v-else-if="selectedItem === 'cart'">
+          <div class="h-full" v-else-if="selectedItem === 'cart'">
            <ClientOnly >
             <Title>Корзина</Title>
             <div class="text-center" v-if="cart === undefined || cart.length === 0">
               <p class="">У вас пустая корзина</p>
               <NuxtLink to="/"><b>За покупками</b></NuxtLink>
             </div>
-            <div class="" v-else>
-              {{ console.log(cart) }}
+            <div class="flex flex-col h-full" v-else>
               <CartItem :product="product.choice" :count="product.quantity" v-for="product in cart" @remove-cart-item="removeItemCart"/>
+              
+              <div class="mt-auto mb-[30px]">
+                <span class="mb-[15px] text-[1.3rem] block"><b>Итого:</b> {{ getTotalPrice() }}₽</span>
+                <NuxtLink to="/checkout">
+                  <button class="w-full border border-black p-[15px] bg-red transition hover:bg-black hover:text-white">Чек</button>
+                </NuxtLink>
+              </div>
             </div>
            </ClientOnly>
           </div>
@@ -148,7 +154,13 @@
 
     selectedCategory = 'pass';
   }
-
+  
+  function getTotalPrice() {
+    return cart.value.reduce((acc, val) => {
+      return acc + Number( val.choice.price * val.quantity);
+    }, 0);
+  }
+ 
   async function deleteAccount(confirm) {
     if(confirm === currentUser.value.login) {
       const user = await $fetch('/api/userRemove', {

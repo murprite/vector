@@ -168,6 +168,7 @@
         showErrorPopup("Пароли не совпадают");
         return;
       }
+      
       const response = await $fetch("api/user/register", {
         method: 'POST',
         body: user

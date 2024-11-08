@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :to="'/products/' + id" class="text-center">
-        <div class="ProductCard p-[24px] relative grid-rows-1 h-[360px] bg-no-repeat w-[300px] max-h-[300px] bg-cover flex flex-col justify-end text-center bg-red" :style="{ backgroundImage: `url(../.${cardImageUrl})`}">
+        <div class="ProductCard w-full p-[24px] relative grid-rows-1 h-[360px] bg-no-repeat w-[300px] max-h-[400px] bg-cover flex flex-col justify-end text-center bg-red" :style="{ backgroundImage: `url(../.${cardImageUrl})`}">
             
         </div>
         <p class="text-black font-bold">{{  name  }}</p>
@@ -17,8 +17,8 @@
 
 <style scoped>
     .ProductCard {
-         background-size: "cover";
+         background-size: cover;
          background-position: center;
-         background-repeat: "no-repeat";
+         background-repeat: no-repeat;
     }
 </style>

@@ -15,7 +15,6 @@ definePageMeta({
         return typeof route.params.id === 'string' && /^\d+$/.test(route.params.id)
     }
 });
-
 let { data: product } = await useFetch(`/api/products?id=${id}`, {
     method: "GET",
 });

@@ -1,17 +1,18 @@
 import prisma from "~/lib/prisma";
 import crypto from "crypto";
-import { ERRORS, SECRET_KEY } from "~/assets/constants/constants";
+import { ERRORS, SECRET_KEY, IJSONUser } from "~/assets/constants/constants";
 
 export default defineEventHandler(async (event) => {
-  let body: JSONUser = await readBody(event);
+  let body: IJSONUser = await readBody(event);
   
   if(!body) return ERRORS.NO_USER;
   if(!body.username || !body.pass) return ERRORS.BAD_JSON;
 
   const users = await prisma.user.findMany({ where: {
-    fullName: body.username,
-    pass: body.pass,
+    login: body.username,
+    pass: crypto.hash('sha512', body.pass),
   }});
+  
   if(users.length === 0) {
     return ERRORS.NO_USER;
   }
@@ -33,8 +34,8 @@ function base64URLencode(str: string) {
   return Buffer.from(str).toString('base64url');
 }
 
-function getValidJSON(body: string): JSONUser {
-  let json: JSONUser = JSON.parse(body);
+function getValidJSON(body: string): IJSONUser {
+  let json: IJSONUser = JSON.parse(body);
   console.log(json)
 
  if(!json.username || !json.pass) {
@@ -42,9 +43,4 @@ function getValidJSON(body: string): JSONUser {
  }
 
  return json;
-}
-
-interface JSONUser extends JSON {
-  username: string;
-  pass: string;
 }

@@ -19,6 +19,11 @@ export interface IUserRegisterData {
     pass: string
 }
 
+export interface IJSONUser extends JSON {
+    username: string;
+    pass: string;
+  }
+
 export interface IGetPosts {
     id?: number
 }
