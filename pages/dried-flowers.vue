@@ -1,12 +1,12 @@
 <template>
     <title>Высушенные цветы</title>
-    <div class="index bg-black grid">
+    <div class="index grid">
         <Header />
-        <div class="grid grid-cols-1 md:grid-cols-2" v-if="status !== 'pending' && products.length !== 0">
+        <div class="grid grid-cols-1 md:grid-cols-2 border border-black border-l-0 border-r-0" v-if="status !== 'pending' && products.length !== 0">
             <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-cover bg-white">
                 <p class="text-[4rem] text-white text-center my-[260px]">Высушенные цветы</p>
             </div>
-            <div class="grid grid-cols-2 gap-[1px] bg-white">
+            <div class="products__wrapper grid grid-cols-2 grid-rows-2">
                 <template v-if="status !== 'pending'" v-for="product in products">
                     <ProductCard :product />
                 </template>

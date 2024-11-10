@@ -1,22 +1,22 @@
 <template>
     <title>Свечи</title>
-    <div class="index bg-black grid gap-[1px]" v-if="status !== 'pending' && products.length !== 0">
+    <div class="index grid">
         <Header />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
-            <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-white">
+        <div class="grid grid-cols-1 md:grid-cols-2 border border-black border-l-0 border-r-0" v-if="status !== 'pending' && products.length !== 0">
+            <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-cover bg-white">
                 <p class="text-[4rem] text-white text-center my-[260px]">Свечи</p>
             </div>
-            <div class="grid grid-cols-2 gap-[1px] bg-black">
+            <div class="products__wrapper grid grid-cols-2 grid-rows-2">
                 <template v-if="status !== 'pending'" v-for="product in products">
-                    <ProductCard :text="product.name" :price="product.price" :id="product.id" :imageUrl="product.imageUrl.slice(1, product.imageUrl.length)" />
-                </template> 
+                    <ProductCard :product />
+                </template>
             </div>
         </div>
+        <template v-else>
+            <Empty />
+        </template>
         <Footer />
-    </div>
-    <template v-else>
-        <Empty />
-    </template>
+    </div>  
 </template>
 
 <script setup>

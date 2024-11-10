@@ -1,10 +1,12 @@
 <template>
-    <NuxtLink :to="'/products/' + id" class="text-center">
-        <div class="ProductCard w-full p-[24px] relative grid-rows-1 h-[360px] bg-no-repeat w-[300px] max-h-[400px] bg-cover flex flex-col justify-end text-center bg-red" :style="{ backgroundImage: `url(../.${cardImageUrl})`}">
+    <NuxtLink :to="'/products/' + id" class="text-center relative row-span-1">
+        <div class="ProductCard w-full p-[24px] relative grid-rows-1 h-[360px] bg-no-repeat max-h-[400px] bg-cover flex flex-col justify-end text-center bg-red" :style="{ backgroundImage: `url(../.${cardImageUrl})`}">
             
         </div>
-        <p class="text-black font-bold">{{  name  }}</p>
-        <p class="text-gray-500">Цена {{  price  }} ₽</p>
+        <div class="absolute bottom-[15px] left-[50%] translate-x-[-50%]">
+            <p class="text-black font-bold">{{  name  }}</p>
+            <p class="text-gray-500">Цена {{  price  }} ₽</p>
+        </div>
     </NuxtLink>    
 </template>
 
