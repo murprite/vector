@@ -17,7 +17,7 @@
       </template>
       <Button class="bg-white" @click="isCartOpen = !isCartOpen">Корзина</Button>
     </div>
-    <button class="slider__mobile flex md:hidden items-center !bg-black justify-center"
+    <button class="slider__mobile flex md:hidden items-center justify-center"
       @click="isProfileOpen = !isProfileOpen">
       <NuxtImg src="./nav-right.svg" width="32" height="32" />
     </button>
@@ -101,7 +101,7 @@
     </div>
   </Drawer>
   <Drawer position="left" v-model:visible="isMenuOpen" :showCloseIcon="false">
-    <div class="Menu bg-white h-[100vh] border-black border-r-[1px] p-[5px] relative">
+    <div class="Menu bg-white h-[100vh]  p-[5px] relative">
       <div class="footer__contact p-[40px] flex flex-col justify-center">
         <p class="text-gray-500 text-[18px] mb-[24px]">Контакты</p>
         <p class="text-gray-500">Адрес</p>
@@ -138,14 +138,32 @@
     </div>
   </Drawer>
   <Drawer position="right" v-model:visible="isProfileOpen" :showCloseIcon="false">
-    <div class="Menu bg-white h-[100vh] border-black border-l-[1px] p-[20px]">
-      <template v-if="user">
-        <Title>{{ user.id }}</Title>
+    <div class="Menu bg-white h-[100vh] p-[20px]">
+      <template v-if="currentUser">
+        <div class="Cart bg-white h-full relative">
+          <div class="text-center" v-if="cart === undefined || cart.length === 0">
+            <p class="">У вас пустая корзина</p>
+            <NuxtLink to="/"><b>За покупками</b></NuxtLink>
+          </div>
+          <div class="flex flex-col h-full" v-else>
+            <CartItem :product="product.choice" :count="product.quantity" v-for="product in cart"
+              @remove-cart-item="removeItemCart" />
+
+            <div class="mt-auto mb-[30px]">
+              <span class="mb-[15px] text-[1.3rem] block"><b>Итого:</b> {{ getTotalPrice() }}₽</span>
+              <NuxtLink to="/checkout">
+                <button
+                  class="w-full border border-black p-[15px] bg-red transition hover:bg-black hover:text-white">Чек</button>
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
       </template>
       <template v-else>
-        <div class="grid grid-cols-2 gap-[1px] bg-black text-[18px]">
-          <Button class="bg-white">Вход</Button>
-          <Button class="bg-white">Регистрация</Button>
+        <div class="flex flex-col items-center text-[18px] text-center">
+          <Title class="mb-[15px]">Войдите в аккаунт для совершения покупок</Title>
+          <Button class="bg-white mb-[10px]" @click="() => authPopup = !authPopup">Вход</Button>
+          <Button class="bg-white border-black border-l-1" @click="() => registerPopup = !registerPopup">Регистрация</Button>
         </div>
       </template>
     </div>
@@ -186,7 +204,18 @@ const currentStatus = ref("ready");
 
 let cart = [];
 
-onMounted(() => {
+onMounted(async () => {
+  let jwt = useCookie('luxflowers-jwt').value;
+  jwt = !jwt ? '' : jwt.jwt;
+
+  let { data: user, status } = await useFetch("/api/user/jwt", {
+    method: "POST",
+    body: jwt
+  });
+  currentUser = user;
+
+  console.log(user)
+
   cart = useCookie('cart');
   if(!cart) cart.value = [];
 });
@@ -199,6 +228,7 @@ const registerUserData = reactive({
 })
 
 let userJwt = useCookie("luxflowers-jwt");
+let currentUser = null;
 
 function showErrorPopup(err) {
   errorMessageShown.value = true;
@@ -280,14 +310,11 @@ function isUserHavingJwt() {
   return userJwt.value !== undefined;
 }
 async function openCart() {
-  let jwt = useCookie("luxflowers-jwt");
-  if (!jwt.value) {
+  let jwt = useCookie("luxflowers-jwt").value.jwt;
+  if (!jwt) {
     authPopup.value = true;
   }
-
-  let { data: response } = await $fetch("api/user", {
-    method: "GET"
-  });
+  console.log(jwt)
 
   if (response) return navigateTo("/cabinet");
 }

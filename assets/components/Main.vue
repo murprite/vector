@@ -1,5 +1,5 @@
 <template>
-    <main class="Main text-black font-montserrat md:grid flex flex-col grid-cols-1 md:grid-cols-2 gap-[1px] bg-black">
+    <main class="Main text-black font-montserrat md:grid flex flex-col grid-cols-1 md:grid-cols-2 gap-[1px] bg-black max-w-[100vw]">
             <div class="main__title_wrapper md:row-span-5">
                 <div class="main-title__left border-b-[1px] border-black pt-[79px] pb-[80px] px-[80px]">
                     <div class="title-wrap grid grid-rows-2 gap-[1px] bg-black">
@@ -96,31 +96,25 @@
             <div class="main__subscribtionImg">
                 <NuxtImg src="./image.png" class="w-full" /> 
             </div>
-            <div class="main__subscribtion px-[80px] flex flex-col items-center justify-center text-center">
+            <div class="main__subscribtion px-[80px] flex flex-col items-center justify-center text-center py-[15px]">
                 <p>Сервис</p>
                 <SubTitle>Подписка на цветы</SubTitle>
                 <p class="mb-16">Experience the convenience and savings of regular flower deliveries with our flexible subscription service - up to 30% more profitable than one-time purchases.</p>
                 <button class="px-[40px] py-[20px] text-black bg-white border border-black uppercase">Записаться</button>
             </div>
-            <div class="main__wedding col-span-2 py-[200px] flex flex-col !text-white justify-center text-center items-center" :style="{ backgroundImage: `url(${backgroundUrl})` }">
+            <div class="main__wedding max-w-[100vw] col-span-2 py-[200px] flex flex-col !text-white justify-center text-center items-center" :style="{ backgroundImage: `url(${backgroundUrl})`, backgroundSize: 'cover' }">
                 <p>Сервис</p>
                 <SubTitle>Свадьбы & Мероприятия</SubTitle>
                 <p class="mb-16">Let our team of expert florists and designers create stunning, on-trend floral décor for your special day. Trust us to bring your vision to life.</p>
                 <button class="px-[40px] py-[20px] bg-none border border-white uppercase">Записаться</button>
             </div>
-            <div class="main__clients col-span-2 flex flex-col justify-center items-center p-[80px]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="4em" height="4em" viewBox="0 0 32 32">
-                    <g fill="none" fill-rule="evenodd">
-                        <circle cx="16" cy="16" r="16" fill="#bfbbbb" />
-                        <path fill="#fff" d="M10.427 19.214L9 19.768l.688-2.759l1.444-.58L13.213 8h5.129l-1.519 6.196l1.41-.571l-.68 2.75l-1.427.571l-.848 3.483H23L22.127 24H9.252z" />
-                    </g>
-                </svg>
+            <div class="main__clients col-span-2 flex flex-col justify-center items-center p-[60px] text-center max-w-[100vw]">
                 <p class="mt-[10px]">Отзывы</p>
                 <SubTitle class="mt-[24px] mb-[16px]">Отзывы наших клиентов</SubTitle>
-                <div class="reviews__wrapper flex text-[24px]">
-                    <Carousel :num-scroll="1" :num-visible="1" :value="products" containerClass="text-center text-3xl font-medium">
+                <div class="reviews__wrapper flex text-[24px] max-w-[100vw]">
+                    <Carousel :num-scroll="1" :num-visible="1" :value="products" containerClass="text-center text-3xl font-medium max-w-[80vw]">
                         <template #item="slotProps">
-                            <p>"{{ slotProps.data.text }}"</p>
+                            <p class="max-w-[90vw]">"{{ slotProps.data.text }}"</p>
                             <p>- {{ slotProps.data.author }}</p>
                         </template>
                     </Carousel>
@@ -155,9 +149,9 @@
 
     
     const products = ref([
-        {id: 1488, text: "Those flowers are the best. I'll buy it later again", author: "Jeff"},
-        {id: 65465, text: "Another one good review about those flowers. Those flowers are the best and you should buy it, or you'll be dead", author: "Sam"},
-        {id: 228, text: "LOrem ipsum dolor sit amet commit another one bite the dust queen lol", author: "John"},
+        {id: 1488, text: "Хорошие цветы, доставка пришла быстро", author: "Jeff"},
+        {id: 65465, text: "Хорошие цветы, доставка пришла быстро, дополнительный текст", author: "Sam"},
+        {id: 228, text: "Хорошие цветы, доставка пришла быстро, дополнительный текст и ещё один дополнительный текст", author: "John"},
     ])
     
 

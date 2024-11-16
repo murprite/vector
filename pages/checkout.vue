@@ -62,7 +62,7 @@
       <div class="main__right py-[40px] px-[80px]">
         <span class="uppercase font-bold">Итог заказа</span>
         <div class="products">
-          <div class="product" v-if="cart.value !== undefined" v-for="product in cart.value">
+          <div class="product" v-if="cart && cart.value !== undefined" v-for="product in cart.value">
             <NuxtImg :src="product.choice.cardImageUrl"/>
             <div class="">
               {{ product.choice.name }}
@@ -71,7 +71,7 @@
             <div class="">${{ product.choice.price }}</div>
           </div>
         </div>
-        <div class="" v-if="cart.value.length !== 0">
+        <div class="" v-if="cart && cart.value.length !== 0">
           <div class="border-left-1">
             Если у вас имеется промокод, введите его, чтобы получить скидку
             <div class="">
@@ -137,6 +137,8 @@
   onMounted(() => {
     cart.value = useCookie('cart');
     if(!cart) cart.value = [];
+
+    console.log(cart)
   });
 
   function changeItem(item) {
