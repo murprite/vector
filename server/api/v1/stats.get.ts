@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   }});
 
   if(!user) return ERRORS.WRONG_JWT;
-  
+  return;
   // TODO: stats
   //return await prisma.stats.findMany();
 })

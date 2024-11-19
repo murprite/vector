@@ -5,15 +5,8 @@ export const ERRORS = {
     NO_BODY: { error: "No payload" },
     BAD_JSON: { error: "Bad JSON" },
     WRONG_JWT: { error: "Unauthorizated"},
+    UNKNOWN: {error: "Some unknown error"}
 }
-
-//  FlowerTypes:
-//  Dried: 0;
-//  Fresh: 1;
-//  Live: 2;
-//  Vases: 3;
-//  Candles: 4;
-//  Refreshers: 5;
 
 export interface IUserRegisterData {
     email: string,
@@ -53,4 +46,17 @@ export interface ICreateUser {
 export interface IUserJWT {
     jwt: string;
     id?: string;
+}
+
+//  FlowerTypes:
+//  Dried: 0;
+//  Fresh: 1;
+//  Live: 2;
+//  Vases: 3;
+//  Candles: 4;
+//  Refreshers: 5;
+
+export function getFlowerCategory(id: number) {
+    const flowersType = ['Высушенные цветы', "Свежие цветы", 'Ароматические цветы', 'Вазы', 'Свечи', 'Освежители'];
+    return flowersType[id];
 }

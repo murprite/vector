@@ -3,6 +3,8 @@ import { ERRORS, IUserJWT } from "~/assets/constants/constants";
 
 export default defineEventHandler(async (event) => {
   const params = getQuery<IUserJWT>(event);
+
+  console.log(params)
   
   if(!params.jwt) return ERRORS.NO_BODY;
 
@@ -12,7 +14,7 @@ export default defineEventHandler(async (event) => {
   }});
 
   if(!user) return ERRORS.WRONG_JWT;
-  return;
-  // TODO: inboxes
-  //return await prisma.inbox.findMany();
+  console.log('response')
+  const products = await prisma.product.findMany();
+  return products ? products : ERRORS.UNKNOWN;
 })

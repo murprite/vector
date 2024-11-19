@@ -1,5 +1,8 @@
 import { $fetch } from 'ofetch';
 
+// TODO: find url dynamicaly
+const v1apiUrl = "http://localhost:3000/api/v1";
+
 export default class ServerAPI {
     token = "";
     constructor(token: string) {
@@ -7,7 +10,7 @@ export default class ServerAPI {
     }
 
     async getServerStats(date=1) {
-        const stats = await $fetch("/api/v1/stats", {
+        const stats = await $fetch(v1apiUrl + "/stats", {
           method: 'GET',
           params: {
             jwt: this.token,
@@ -18,7 +21,7 @@ export default class ServerAPI {
       }
     
       async getServerChats() {
-        const chats = await $fetch("/api/v1/chats", {
+        const chats = await $fetch(v1apiUrl + "/chats", {
           method: 'GET',
           params: {
             jwt: this.token
@@ -28,7 +31,7 @@ export default class ServerAPI {
       } 
     
       async getServerInbox() {
-        const inbox = await $fetch("/api/v1/inbox", {
+        const inbox = await $fetch(v1apiUrl + "/inbox", {
           method: 'GET',
           params: {
             jwt: this.token
@@ -38,7 +41,7 @@ export default class ServerAPI {
       }
     
       async getServerUsers(id=null) {
-        const chats = await $fetch("/api/v1/users", {
+        const chats = await $fetch(v1apiUrl + "/users", {
           method: 'GET',
           params: {
             jwt: this.token,
@@ -50,7 +53,7 @@ export default class ServerAPI {
       }
     
       async getServerBlogs(id=null) {
-        const blogs = await $fetch("/api/v1/blogs", {
+        const blogs = await $fetch(v1apiUrl + "/blogs", {
           method: 'GET',
           params: {
             jwt: this.token,
@@ -59,5 +62,15 @@ export default class ServerAPI {
         });
         return blogs;
 
+      }
+
+      async getServerProducts() {
+        const products = await $fetch(v1apiUrl + "/products", {
+            method: 'GET',
+            params: {
+              jwt: this.token
+            }
+        });
+        return products;
       }
 }

@@ -26,12 +26,60 @@
             <p>Основная страница</p>
             <b class="text-2xl">Добро пожаловать, {{ currentUser.fullName ? currentUser.fullName : 'снова' }}</b>
             <div class="home__stats">
-              <SelectButton v-model="statsSelect" :options="statsOptions" class="my-[15px]"/>
+              <div class="flex justify-between items-center">
+                <SelectButton v-model="statsSelect" :options="statsOptions" class="my-[15px]"/>
+                <Button class="!bg-[#020617] h-[40px] !border-0">Скачать в виде JSON</Button>
+              </div>
               <Panel>
                 <p>Отчёт продаж</p>
                 <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem]" />
               </Panel>
             </div>
+          </template>
+          <template v-if="currentCategory === 'products'">
+            {{ console.log(data.products) }}
+            <p>Товары</p>
+            <b class="text-2xl">Товары в продаже</b>
+            <DataView :value="data.products" :sortOrder="sortOrder" :sortField="sortField">
+              <template #header>
+                  <div class="flex justify-between items-center">
+                    <Select v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Сортрировка по цене" @change="onSortChange($event)" />
+                    <Button label="Добавить" icon="pi pi-plus" />
+                  </div>
+              </template>
+              <template #list="slotProps">
+                  <div class="flex flex-col">
+                      <div v-for="(item, index) in slotProps.items" :key="index">
+                          <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
+                              <div class="md:w-40 relative">
+                                  <NuxtImg class="block xl:block mx-auto rounded w-full" :src="item.cardImageUrl" :alt="item.name" />
+                              </div>
+                              <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+                                  <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                                      <div>
+                                          <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ getFlowerCategory(item.flowersType) }}</span>
+                                          <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                                      </div>
+                                      <div class="bg-surface-100 p-1" style="border-radius: 30px">
+                                          <div class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2" style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)">
+                                            {{ item.count === 0 ? 'Нет в наличии' : '' }}  
+                                            Количество на складе: {{ item.count ? item.count : 0 }}
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="flex flex-col md:items-end gap-8">
+                                      <span class="text-xl font-semibold">{{ item.price }}₽</span>
+                                      <div class="flex flex-row-reverse md:flex-row gap-2">
+                                          <Button icon="pi pi-trash" class="!bg-[#f40000] hover:!bg-[#a40000] border !border-red-700"></Button>
+                                          <Button icon="pi pi-pencil" label="Изменить" class="flex-auto md:flex-initial whitespace-nowrap"></Button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </template>
+          </DataView>
           </template>
         </Panel>
       </div>
@@ -50,7 +98,7 @@
   import Chart from 'primevue/chart';
 
   import ServerAPI from '~/assets/constants/ServerAPI';
-  import { MONTHS } from '~/assets/constants/constants';
+  import { MONTHS, getFlowerCategory } from '~/assets/constants/constants';
 
   const items = ref([
     { label: "Основное", icon: "home", value: 'home' },
@@ -67,7 +115,7 @@
   const chartOptions = ref();
 
   onMounted(() => {
-    chartData.value = setChartData().month;
+    chartData.value = setChartData().day;
     chartOptions.value = setChartOptions();
   });
 
@@ -100,8 +148,6 @@
   });
 
   currentUser = user.value;
-  console.log(currentUser)
-
 
   if(!currentUser.isAdmin) {
     navigateTo("/")
@@ -114,30 +160,33 @@
   }
 
   const $server = new ServerAPI(currentUser.jwt);
-  const currentMonthDays = new Array(30).map((val, i) => {
-    const str = MONTHS[new Date().getMonth()] + ' ' + new Date().getDate();
-    console.log(str);
+
+  const currentMonthDays = Array.from(new Array(29), (x, i) => {
+    const month = MONTHS[new Date(Date.now() - ( 84600000 * (i + 1))).getMonth()];
+    const day = new Date(Date.now() - ( 84600000 * (i + 1))).getDate()
+    const str = month + ' ' + day;
     return str;
   });
-  console.log(currentMonthDays)
+
   const data = reactive({
-    chats: $server.getServerChats(),
-    blogs: $server.getServerBlogs(),
-    inbox: $server.getServerInbox(),
-    users: $server.getServerUsers(),
-    stats: $server.getServerStats(),
+    chats: await $server.getServerChats(),
+    blogs: await $server.getServerBlogs(),
+    inbox: await $server.getServerInbox(),
+    users: await $server.getServerUsers(),
+    stats: await $server.getServerStats(),
+    products: await $server.getServerProducts(),
   });
 
   const setChartData = () => {
     return {
       day: {
-        labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', "Декабрь"],
+        labels: currentMonthDays.reverse(),
         datasets: [
             {
                 label: 'Общая выручка',
                 backgroundColor: "#969696",
                 borderColor: "#000000",
-                data: [58000, 60000, 68900, 78000, 65555, 58000, 60000, 68900, 78000, 65555, 58000, 60000]
+                data: [58000, 60000, 68900, 78000, 65555, 58000, 60000, 68900, 78000, 65555, 58000, 60000, 58000, 60000, 68900, 78000, 65555, 58000, 60000, 68900, 78000, 65555, 58000, 60000, 58000, 60000, 68900, 78000, 65555, 58000]
             },
         ]
       },

@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   }});
 
   if(!user) return ERRORS.WRONG_JWT;
-  
+  return;
   // TODO: chats (or dump it)
   // return await prisma.chats.findMany();
 })
