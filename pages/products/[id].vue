@@ -177,7 +177,7 @@ const userChoice = defineModel('userChoice', {
                     <div class="py-[80px] text-center text-[1.8rem] font-semibold border border-black border-t-0">
                         Вам также могут понравится...
                     </div>
-                    <div class="main__recommendation_card flex justify-between">
+                    <div class="main__recommendation_card flex justify-between gap-[1px]">
                         <ProductCard v-for="card in recommendedCards" :product="card"  class="w-full"/>
                     </div>
                 </div>

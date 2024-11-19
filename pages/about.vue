@@ -2,7 +2,7 @@
   <Header></Header>
   <main class="border border-black border-l-0 border-r-0 grid gap-[1px] bg-black">
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class="main__story text-center flex flex-col items-center justify-center">
+      <div class="main__story text-center flex flex-col items-center justify-center bg-white">
         <Title class="text-[2rem]">Наша история</Title>
         <p class="text-[1.8rem] my-[24px] font-caveat font-semibold">О нас</p>
         <Title class="text-[2rem]">Люксовые цветы</Title>
@@ -21,7 +21,7 @@
         <NuxtImg src="/about-1.png" class="w-full" />
       </div>
     </div>
-    <div class="py-[80px] flex flex-col items-center justify-center text-center">
+    <div class="py-[80px] flex flex-col items-center justify-center text-center bg-white">
       <Title>Наша история</Title>
       <Title class="text-[2rem] my-[24px]">О нас</Title>
       <p class="max-w-[900px] text-[1.3rem] bg-white">Компания была основана в 2010 году с целью подарить уникальные и изысканные букеты. У нас всегда была страсть к цветам и дизайну, и нашей мечтой было создать местную цветочную студию, которая специализировалась бы на создании и доставке свежих, красивых и самобытных букетов.</p>
@@ -54,7 +54,7 @@
         
       </div>
     </div>
-    <div class="py-[80px] flex flex-col items-center justify-center text-center ">
+    <div class="py-[80px] flex flex-col items-center justify-center text-center bg-white">
       <Title class="text-[3rem] my-[24px]">Откройте наши потрясающие проекты</Title>
       <p class="max-w-[900px] text-[1.3rem] bg-white mb-[25px]">Ознакомьтесь с нашей коллекцией изысканных букетов и удивите своих близких идеальным подарком. Нажмите кнопку ниже, чтобы начать покупки</p>
       <NuxtLink to="/" class="max-w-[500px] w-full"><button class="w-full border border-black p-[15px]  bg-red transition hover:bg-black hover:text-white">За покупками</button></NuxtLink>

@@ -1,11 +1,13 @@
 export const SECRET_KEY = "example";
+export const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', "Декабрь"];
 export const ERRORS = {
     NO_USER: { error: "There's no such user" },
     NO_BODY: { error: "No payload" },
     BAD_JSON: { error: "Bad JSON" },
+    WRONG_JWT: { error: "Unauthorizated"},
 }
 
-//  Types:
+//  FlowerTypes:
 //  Dried: 0;
 //  Fresh: 1;
 //  Live: 2;
@@ -50,4 +52,5 @@ export interface ICreateUser {
 
 export interface IUserJWT {
     jwt: string;
+    id?: string;
 }

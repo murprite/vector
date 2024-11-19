@@ -3,7 +3,7 @@
         <div class="ProductCard w-full p-[24px] relative grid-rows-1 h-[360px] bg-no-repeat max-h-[400px] bg-cover flex flex-col justify-end text-center bg-red" :style="{ backgroundImage: `url(../.${cardImageUrl})`}">
             
         </div>
-        <div class="absolute bottom-[15px] left-[50%] translate-x-[-50%]">
+        <div class="text-center bottom-[15px] py-[15px] bg-gray">
             <p class="text-black font-bold">{{  name  }}</p>
             <p class="text-gray-500">Цена {{  price  }} ₽</p>
         </div>
