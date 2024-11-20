@@ -27,7 +27,7 @@
     import ProductCard from '~/assets/shared/ProductCard.vue';
 
     const { status, data: products } = await useFetch("/api/products", {
-        query: {flowersType: 3}
+        query: {flowersType: 0}
     });
 
 </script>

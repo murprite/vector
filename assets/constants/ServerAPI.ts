@@ -1,4 +1,5 @@
 import { $fetch } from 'ofetch';
+import type { IProductQuery } from './constants';
 
 // TODO: find url dynamicaly
 const v1apiUrl = "http://localhost:3000/api/v1";
@@ -9,6 +10,7 @@ export default class ServerAPI {
         this.token = token;
     }
 
+    // GETs
     async getServerStats(date=1) {
         const stats = await $fetch(v1apiUrl + "/stats", {
           method: 'GET',
@@ -72,5 +74,27 @@ export default class ServerAPI {
             }
         });
         return products;
+      }
+
+      // Updates
+      async updateServerProducts(item: IProductQuery) {
+        const products = await $fetch(v1apiUrl + "/update/products", {
+          method: "POST",
+          body: {
+            item,
+            jwt: this.token
+          }
+        })
+      }
+
+      // Creates
+      async createServerProduct(item: IProductQuery) {
+        const products = await $fetch(v1apiUrl + "/create/products", {
+          method: "POST",
+          body: {
+            item,
+            jwt: this.token
+          }
+        })
       }
 }

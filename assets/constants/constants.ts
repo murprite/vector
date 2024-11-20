@@ -25,12 +25,33 @@ export interface IGetPosts {
 
 export interface IProductQuery {
     id?: number;
-    name?:     string;
+    name?: string;
     cardImageUrl?: string;
     price?: number;
     images?: string;
     description?: string;
     flowersType?: number;
+    count?: number;
+}
+export interface IProductAdd {
+    name: string;
+    cardImageUrl: string;
+    price: number;
+    images: string;
+    description: string;
+    flowersType: number;
+    count: number;
+}
+
+
+export interface IProductAPI {
+    jwt: string,
+    item: IProductQuery
+}
+
+export interface IProductAddAPI {
+    jwt: string,
+    item: IProductAdd
 }
 
 export interface ICreateUser {
