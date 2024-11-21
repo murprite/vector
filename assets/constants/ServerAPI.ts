@@ -76,18 +76,21 @@ export default class ServerAPI {
         return products;
       }
 
-      // Updates
-      async updateServerProducts(item: IProductQuery) {
+      // Updates (i'm too tired to refactor types for now... future me will fix that)
+      async updateServerProducts(item: any) {
+        item.flowersType = item.flowersType.code;
+
         const products = await $fetch(v1apiUrl + "/update/products", {
           method: "POST",
           body: {
             item,
             jwt: this.token
           }
-        })
+        });
+        return products;
       }
 
-      // Creates
+      // Creates 
       async createServerProduct(item: IProductQuery) {
         const products = await $fetch(v1apiUrl + "/create/products", {
           method: "POST",
@@ -95,6 +98,19 @@ export default class ServerAPI {
             item,
             jwt: this.token
           }
-        })
+        });
+        return products;
+      }
+
+      // Deletes
+      async deleteServerProduct(id: number) {
+        const response = await $fetch(v1apiUrl + "/delete/products", {
+          method: "POST",
+          body: {
+            id,
+            jwt: this.token
+          }
+        });
+        return response;
       }
 }

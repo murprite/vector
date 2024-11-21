@@ -1,20 +1,23 @@
 <template>
   <title>Панель администрирования</title>
   <template v-if="currentUser.isAdmin">
-    
+
     <main class="flex p-[15px] h-[100vh] w-full">
       <div class="main__left h-full">
         <Toolbar class="flex flex-col justify-start items-center h-full !min-w-0 p-[15px]">
           <template #start>
             <div class="flex flex-col justify-center">
-              <Button v-for="item in items" v-tooltip="item.label" :label="item.label" @click="changeCategory(item.value)" :class="currentCategory === item.value ? 'bg-black' : 'bg-white'" class="hover:!bg-[#020617] mb-[30px] w-[48px] h-[48px]" style="background-color: white; border: 0;">
+              <Button v-for="item in items" v-tooltip="item.label" :label="item.label"
+                @click="changeCategory(item.value)" :class="currentCategory === item.value ? 'bg-black' : 'bg-white'"
+                class="hover:!bg-[#020617] mb-[30px] w-[48px] h-[48px]" style="background-color: white; border: 0;">
                 <i :class="'pi pi-' + item.icon" class="text-[#969696]"></i>
               </Button>
             </div>
           </template>
           <Divider />
           <template #end>
-            <Button label="Настройки" @click="() => changeCategory('settings')" severity="contrast" :class="currentCategory === 'settings' ? 'bg-black' : 'bg-white'">
+            <Button label="Настройки" @click="() => changeCategory('settings')" severity="contrast"
+              :class="currentCategory === 'settings' ? 'bg-black' : 'bg-white'">
               <Icon icon="mdi:gear" name="mdi:gear" color="white" />
             </Button>
           </template>
@@ -27,7 +30,7 @@
             <b class="text-2xl">Добро пожаловать, {{ currentUser.fullName ? currentUser.fullName : 'снова' }}</b>
             <div class="home__stats">
               <div class="flex justify-between items-center">
-                <SelectButton v-model="statsSelect" :options="statsOptions" class="my-[15px]"/>
+                <SelectButton v-model="statsSelect" :options="statsOptions" class="my-[15px]" />
                 <Button class="!bg-[#020617] h-[40px] !border-0">Скачать в виде JSON</Button>
               </div>
               <Panel>
@@ -41,45 +44,59 @@
             <b class="text-2xl">Товары в продаже</b>
             <DataView :value="data.products" :sortOrder="sortOrder" :sortField="sortField">
               <template #header>
-                  <div class="flex justify-between items-center">
-                    <Select v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Сортрировка по цене" @change="onSortChange($event)" />
-                    <Button label="Добавить" icon="pi pi-plus" @click="() => isAddItem = true"/>
-                  </div>
+                <div class="flex justify-between items-center">
+                  <Select v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Сортрировка по цене"
+                    @change="onSortChange($event)" />
+                  <Button @click="() => setAddItem()" label="Добавить" icon="pi pi-plus" />
+                </div>
               </template>
               <template #list="slotProps">
-                  <div class="flex flex-col">
-                      <div v-for="(item, index) in slotProps.items" :key="index">
-                          <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
-                              <div class="md:w-40 relative">
-                                <Tag v-if="item.count === 0" value="Нет в наличии" severity="danger" class="absolute" style="left:5px; top: 5px"></Tag>
-                                <NuxtImg class="block xl:block mx-auto rounded w-full" :src="item.cardImageUrl" :alt="item.name" />
-                              </div>
-                              <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-                                  <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                                      <div>
-                                          <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ getFlowerCategory(item.flowersType) }}</span>
-                                          <div class="text-lg font-medium mt-2">{{ item.name }}</div>
-                                      </div>
-                                      <div class="bg-surface-100" style="border-radius: 30px">
-                                          <div class="bg-surface-0 flex items-center justify-center">
-                                            {{ item.count === 0 ? 'Нет в наличии' : '' }}  
-                                            Количество на складе: {{ item.count ? item.count : 0 }}
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="flex flex-col md:items-end gap-8">
-                                      <span class="text-xl font-semibold">{{ item.price }}₽</span>
-                                      <div class="flex flex-row-reverse md:flex-row gap-2">
-                                          <Button icon="pi pi-trash" class="!bg-[#f40000] hover:!bg-[#a40000] border !border-red-700" @click="() => deleteItem(item.id)"></Button>
-                                          <Button icon="pi pi-pencil" label="Изменить" class="flex-auto md:flex-initial whitespace-nowrap" @click = "() => changeItem(item)"></Button>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
+                <div class="flex flex-col">
+                  <div v-for="(item, index) in slotProps.items" :key="index">
+                    <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
+                      :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
+                      <div class="md:w-40 relative">
+                        <Tag v-if="item.count === 0" value="Нет в наличии" severity="danger" class="absolute"
+                          style="left:5px; top: 5px"></Tag>
+                        <NuxtImg class="block xl:block mx-auto rounded w-full" :src="item.cardImageUrl"
+                          :alt="item.name" />
                       </div>
+                      <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                          <div>
+                            <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
+                              getFlowerCategory(item.flowersType) }}</span>
+                            <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                          </div>
+                          <div class="bg-surface-100" style="border-radius: 30px">
+                            <div class="bg-surface-0 flex items-center justify-center">
+                              Количество на складе: {{ item.count ? item.count : 0 }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="flex flex-col md:items-end gap-8">
+                          <span class="text-xl font-semibold">{{ item.price }}₽</span>
+                          <div class="flex flex-row-reverse md:flex-row gap-2">
+                            <Button icon="pi pi-trash" class="!bg-[#f40000] hover:!bg-[#a40000] border !border-red-700"
+                              @click="() => deleteItem(item.id)"></Button>
+                            <Button icon="pi pi-pencil" label="Изменить"
+                              class="flex-auto md:flex-initial whitespace-nowrap"
+                              @click="() => changeItem(item)"></Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                </div>
               </template>
             </DataView>
+          </template>
+          <template v-if="currentCategory === 'blog'">
+            <p>Последние статьи</p>
+            <b class="text-2xl">Блог</b>
+            <div class="blog">
+              
+            </div>
           </template>
         </Panel>
       </div>
@@ -93,10 +110,10 @@
           <InputText v-model="itemTemp.value.name" placeholder="Название" />
         </InputGroup>
         <InputGroup>
-            <InputGroupAddon>
-              <span>Описание</span>
-            </InputGroupAddon>
-            <InputText v-model="itemTemp.value.description" placeholder="Описание" />
+          <InputGroupAddon>
+            <span>Описание</span>
+          </InputGroupAddon>
+          <InputText v-model="itemTemp.value.description" placeholder="Описание" />
         </InputGroup>
         <div class="flex gap-[15px]">
           <InputGroup>
@@ -108,35 +125,44 @@
           </InputGroup>
 
           <InputGroup>
-              <InputGroupAddon>
-                <i class="pi pi-name"></i>
-                <span>Кол-во</span>
-              </InputGroupAddon>
-              <InputNumber v-model="itemTemp.value.count" placeholder="Кол-во на складе" />
+            <InputGroupAddon>
+              <i class="pi pi-name"></i>
+              <span>Кол-во</span>
+            </InputGroupAddon>
+            <InputNumber v-model="itemTemp.value.count" placeholder="Кол-во на складе" />
           </InputGroup>
         </div>
 
 
         <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-image"></i>
-            </InputGroupAddon>
-            <InputText v-model="itemTemp.value.cardImageUrl" placeholder="Ссылка на превью (./product-1.png)" />
-            <NuxtImg :src="itemTemp.value.cardImageUrl" class="w-[180px] h-[180px]" onerror="this.onerror=null; this.src='./Default.jpg'"/>
+          <InputGroupAddon>
+            <i class="pi pi-image"></i>
+          </InputGroupAddon>
+          <InputText v-model="itemTemp.value.cardImageUrl" placeholder="Ссылка на превью (./product-1.png)" />
+          <NuxtImg :src="itemTemp.value.cardImageUrl" class="w-[180px] h-[180px]"
+            onerror="this.src='/_ipx/_/./Default.png" />
         </InputGroup>
         <NuxtImg />
 
         <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-image"></i>
-            </InputGroupAddon>
-            <InputText v-model="itemTemp.value.images" placeholder="Ссылка на изображения (./product-1-1.png ./product-1-2.png)" />
+          <InputGroupAddon>
+            <i class="pi pi-image"></i>
+          </InputGroupAddon>
+          <InputText v-model="itemTemp.value.images"
+            placeholder="Ссылка на изображения (./product-1-1.png ./product-1-2.png)" />
         </InputGroup>
 
-        <Button label="Обновить данные" @click="updateItem(itemTemp)"></Button>
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-petal"></i>
+          </InputGroupAddon>
+          <Select v-model="itemTemp.value.flowersType" :options="selectOptions" optionLabel="name" placeholder="Выберите тип букета" class="w-full md:w-56" />
+        </InputGroup>
+
+        <Button label="Обновить данные" @click="() => updateItem(itemTemp)"></Button>
       </div>
     </Dialog>
-    <Dialog v-model:visible="isAddItem" header="Добавить букет" modal>
+    <Dialog header="Добавить букет" modal v-model:visible="isAddItem">
       <div class="flex flex-col gap-[15px]">
         <InputGroup>
           <InputGroupAddon>
@@ -144,12 +170,14 @@
           </InputGroupAddon>
           <InputText v-model="addCurrentItem.value.name" placeholder="Название" />
         </InputGroup>
+
         <InputGroup>
-            <InputGroupAddon>
-              <span>Описание</span>
-            </InputGroupAddon>
-            <InputText v-model="addCurrentItem.value.description" placeholder="Описание" />
+          <InputGroupAddon>
+            <span>Описание</span>
+          </InputGroupAddon>
+          <InputText v-model="addCurrentItem.value.description" placeholder="Описание" />
         </InputGroup>
+
         <div class="flex gap-[15px]">
           <InputGroup>
             <InputGroupAddon>
@@ -160,34 +188,43 @@
           </InputGroup>
 
           <InputGroup>
-              <InputGroupAddon>
-                <i class="pi pi-name"></i>
-                <span>Кол-во</span>
-              </InputGroupAddon>
-              <InputNumber v-model="addCurrentItem.value.count" placeholder="Кол-во на складе" />
+            <InputGroupAddon>
+              <i class="pi pi-name"></i>
+              <span>Кол-во</span>
+            </InputGroupAddon>
+            <InputNumber v-model="addCurrentItem.value.count" placeholder="Кол-во на складе" />
           </InputGroup>
         </div>
 
 
         <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-image"></i>
-            </InputGroupAddon>
-            <InputText v-model="addCurrentItem.value.cardImageUrl" placeholder="Ссылка на превью (./product-1.png)" />
-            <NuxtImg :src="addCurrentItem.value.cardImageUrl" class="w-[180px] h-[180px]" onerror="this.onerror=null; this.src='./Default.jpg'"/>
+          <InputGroupAddon>
+            <i class="pi pi-image"></i>
+          </InputGroupAddon>
+          <InputText v-model="addCurrentItem.value.cardImageUrl" placeholder="Ссылка на превью (./product-1.png)" />
+          <NuxtImg :src="addCurrentItem.value.cardImageUrl" class="w-[180px] h-[180px]"
+            onerror="this.src='./Default.png'" />
         </InputGroup>
-        <NuxtImg />
 
         <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-image"></i>
-            </InputGroupAddon>
-            <InputText v-model="addCurrentItem.value.images" placeholder="Ссылка на изображения (./product-1-1.png ./product-1-2.png)" />
+          <InputGroupAddon>
+            <i class="pi pi-image"></i>
+          </InputGroupAddon>
+          <InputText v-model="addCurrentItem.value.images"
+            placeholder="Ссылка на изображения (./product-1-1.png ./product-1-2.png)" />
         </InputGroup>
 
-        <Button label="Добавить букет" @click="addItem(addCurrentItem.value)"></Button>
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-petal"></i>
+          </InputGroupAddon>
+          <Select v-model="addCurrentItem.value.flowersType" :options="selectOptions" optionLabel="name" placeholder="Выберите тип букета" class="w-full md:w-56" />
+        </InputGroup>
+
+        <Button label="Добавить букет" @click="() => addItem(addCurrentItem.value)"></Button>
       </div>
     </Dialog>
+
   </template>
 
 </template>
@@ -202,13 +239,14 @@
   import InputGroup from 'primevue/inputgroup';
   import InputGroupAddon from 'primevue/inputgroupaddon';
   import Dialog from 'primevue/dialog';
+  import Select from 'primevue/select';
 
   import ServerAPI from '~/assets/constants/ServerAPI';
   import { MONTHS, getFlowerCategory } from '~/assets/constants/constants';
   import InputNumber from 'primevue/inputnumber';
 
   class Item {
-    constructor(name='Букет', cardImageUrl="./Default.png", images="./product-1-1.png", price=1000, description='Описание', flowersType=0, count=0) {
+    constructor(name='Букет', cardImageUrl="./Default.png", images="./product-1-1.png", price=1000, description='Описание', flowersType={name: "Высушенные цветы", code: 0}, count=0) {
       this.count = count;
       this.name = name;
       this.cardImageUrl = cardImageUrl;
@@ -230,6 +268,15 @@
   const statsSelect = ref("Ежедневный");
   const statsOptions = ref(["Ежедневный", "Ежемесячный", "Ежегодный"]);
 
+  const selectOptions = ref([
+    {name: "Высушенные цветы", code: 0},
+    {name: "Свежие цветы", code: 1},
+    {name: "Ароматические цветы", code: 2},
+    {name: "Вазы", code: 3},
+    {name: "Свечи", code: 4},
+    {name: "Освежители", code: 5},
+  ]);
+
   const chartData = ref();
   const chartOptions = ref();
 
@@ -242,7 +289,7 @@
   const currentItem = reactive({});
   const addCurrentItem = reactive(new Item());
   addCurrentItem.value = new Item();
-  console.log(addCurrentItem.value)
+
   const itemTemp = reactive({});
   let currentUser = reactive({
     isAdmin: false,
@@ -394,38 +441,50 @@ const setChartOptions = () => {
 
   function changeItem(item) {
     currentItem.value = item;
-    itemTemp.value = Object.assign({}, currentItem.value);
+    itemTemp.value = new Item(item.name, item.cardImageUrl, item.images, item.price, item.description, item.flowersType, item.count);
+    itemTemp.value.id = item.id;
     isChangeItem.value = !isChangeItem.value;
 
-    console.log(itemTemp)
   }
 
   async function addItem(item) {
+    console.log(addCurrentItem.value)
     const newItem = new Item(item.name, item.cardImageUrl, item.images, item.price, item.description, item.flowersType, item.count);
     addCurrentItem.value = {};
+
 
     const response = await $server.createServerProduct(newItem);
     data.products = await $server.getServerProducts();
     isAddItem.value = false;
   }
 
+  function setAddItem() {
+    isAddItem.value = true;
+    console.log(isAddItem)
+  } 
+
   async function updateItem(item) {
     currentItem.value = item;
-
+    console.log(item.value)
     try {
-      const response = $server.updateServerProducts(item.value);
+      const response = await $server.updateServerProducts(item.value);
       data.products = await $server.getServerProducts();
       currentItem.value = item.value;
-      isChangeItem = false;
+      isChangeItem.value = false;
 
-    } catch {
-      console.log("Konosuba!")
+    } catch(e) {
+      console.log("Konosuba!", e)
     }
   }
 
-  function deleteItem(item) {
-    itemTemp.value = Object.assign({}, currentItem.value);
-    isDeleteItem.value = !isDeleteItem.value;
+  async function deleteItem(itemId) {
+    try {
+      const response = await $server.deleteServerProduct(itemId);
+      data.products = await $server.getServerProducts();
+
+    } catch {
+      console.log("Konosuba!");
+    }
   }
 
 </script>
