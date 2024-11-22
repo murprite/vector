@@ -13,5 +13,5 @@ export default defineEventHandler(async (event) => {
 
   if(!user) return ERRORS.WRONG_JWT;
   
-  return await prisma.product.delete({where: {id: body.id}});
+  return await prisma.post.delete({where: {id: body.id}});
 })

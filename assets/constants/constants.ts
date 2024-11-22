@@ -8,6 +8,20 @@ export const ERRORS = {
     UNKNOWN: {error: "Some unknown error"}
 }
 
+export interface IBlog {
+    title: string,
+    annotation: string,
+    mainImageUrl: string,
+    text: string,
+    imagesUrl: string,
+    id?: number
+}
+
+export interface IBlogAPI {
+    post: IBlog,
+    jwt: string
+}
+
 export interface IUserRegisterData {
     email: string,
     login: string,

@@ -92,10 +92,53 @@
             </DataView>
           </template>
           <template v-if="currentCategory === 'blog'">
-            <p>Последние статьи</p>
-            <b class="text-2xl">Блог</b>
+            
             <div class="blog">
-              
+              <p>Последние статьи</p>
+              <b class="text-2xl">Блог</b>
+              <DataView :value="data.blogs">
+                <template #header>
+                  
+                  <div class="flex justify-between items-center">
+                    <Button @click="() => setChangePost()" label="Добавить" icon="pi pi-plus" class="ml-auto"/>
+                  </div>
+                </template>
+                <template #list="slotProps">
+                  <div class="flex flex-col">
+                    <div v-for="(item, index) in slotProps.items" :key="index">
+                      <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
+                        :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
+                        <div class="md:w-40 relative">
+                          {{ item.title }}
+                        </div>
+                        <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+                          <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                            <div>
+                              <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">
+                                {{ item.createdAt }}</span>
+                              <div class="text-lg font-medium mt-2">{{ item.annotation }}</div>
+                            </div>
+                            <div class="bg-surface-100" style="border-radius: 30px">
+                              <div class="bg-surface-0 flex items-center justify-center">
+                                {{ item.text }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flex flex-col md:items-end gap-8">
+                            <div class="flex flex-row-reverse md:flex-row gap-2">
+                              <Button icon="pi pi-trash" class="!bg-[#f40000] hover:!bg-[#a40000] border !border-red-700"
+                                @click="() => deletePost(item.id)"></Button>
+                              <Button icon="pi pi-pencil" label="Изменить"
+                                class="flex-auto md:flex-initial whitespace-nowrap"
+                                @click="() => changePost(item)"></Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </DataView>
             </div>
           </template>
         </Panel>
@@ -160,6 +203,43 @@
         </InputGroup>
 
         <Button label="Обновить данные" @click="() => updateItem(itemTemp)"></Button>
+      </div>
+    </Dialog>
+    <Dialog v-model:visible="isChangePost" header="Изменить данные" modal>
+      <div class="flex flex-col gap-[15px]">
+        <InputGroup>
+          <InputGroupAddon>
+            <span>Название поста</span>
+          </InputGroupAddon>
+          <InputText v-model="postTemp.value.title" placeholder="Название" />
+        </InputGroup>
+        <InputGroup>
+          <InputGroupAddon>
+            <span>Аннотация</span>
+          </InputGroupAddon>
+          <InputText v-model="postTemp.value.annotation" placeholder="Описание" />
+        </InputGroup>
+        <div class="flex gap-[15px]">
+          <InputGroup>
+            <InputGroupAddon>
+              <span class="ml-[5px]">Текст поста</span>
+            </InputGroupAddon>
+            <InputText v-model="postTemp.value.text" placeholder="Текст" />
+          </InputGroup>
+        </div>
+
+
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-image"></i>
+          </InputGroupAddon>
+          <InputText v-model="postTemp.value.mainImageUrl" placeholder="Ссылка на превью (./preview-1.png)" />
+          <NuxtImg :src="postTemp.value.mainImageUrl" class="w-[180px] h-[180px]"
+            onerror="this.src='/_ipx/_/./Default.png" />
+        </InputGroup>
+        <NuxtImg />
+
+        <Button label="Обновить данные" @click="() => addPost(postTemp)"></Button>
       </div>
     </Dialog>
     <Dialog header="Добавить букет" modal v-model:visible="isAddItem">
@@ -257,6 +337,17 @@
     }
   }
 
+  class Post {
+    constructor(title='Заголовок', annotation="Аннотация", mainImageUrl="./preview.png", text='Текст статьи', imagesUrl="./preview.png", id=null) {
+      this.title = title;
+      this.annotation = annotation;
+      this.mainImageUrl = mainImageUrl;
+      this.text = text;
+      this.id = id;
+      this.imagesUrl = imagesUrl;
+    }
+  }
+
   const items = ref([
     { label: "Основное", icon: "home", value: 'home' },
     { label: "Товары", icon: "shopping-cart", value: 'products' },
@@ -283,6 +374,7 @@
   const isChangeItem = ref(false);
   const isDeleteItem = ref(false);
   const isAddItem = ref(false);
+  const isChangePost = ref(false);
 
   let currentCategory = ref("home");
 
@@ -291,6 +383,9 @@
   addCurrentItem.value = new Item();
 
   const itemTemp = reactive({});
+  const postTemp = reactive({});
+  postTemp.value = new Post();
+
   let currentUser = reactive({
     isAdmin: false,
     jwt: null
@@ -298,8 +393,27 @@
 
   const sortKey = ref();
   const sortField = ref();
-  const sortOptions = ref();
+  const sortOptions = ref([
+    {label: "Цена по убыванию", value: "!price"},
+    {label: "Цена по возрастанию", value: "price"},
+  ]);
   const sortOrder = ref();
+
+  const onSortChange = (event) => {
+    const value = event.value.value;
+    const sortValue = event.value;
+
+    if (value.indexOf('!') === 0) {
+        sortOrder.value = -1;
+        sortField.value = value.substring(1, value.length);
+        sortKey.value = sortValue;
+    }
+    else {
+        sortOrder.value = 1;
+        sortField.value = value;
+        sortKey.value = sortValue;
+    }
+};
 
   onMounted(() => {
     chartData.value = setChartData().day;
@@ -451,7 +565,7 @@ const setChartOptions = () => {
     console.log(addCurrentItem.value)
     const newItem = new Item(item.name, item.cardImageUrl, item.images, item.price, item.description, item.flowersType, item.count);
     addCurrentItem.value = {};
-
+    newItem.flowersType = item.flowersType.code;
 
     const response = await $server.createServerProduct(newItem);
     data.products = await $server.getServerProducts();
@@ -467,7 +581,7 @@ const setChartOptions = () => {
     currentItem.value = item;
     console.log(item.value)
     try {
-      const response = await $server.updateServerProducts(item.value);
+      const response = await $server.updateServerProduct(item.value);
       data.products = await $server.getServerProducts();
       currentItem.value = item.value;
       isChangeItem.value = false;
@@ -485,6 +599,43 @@ const setChartOptions = () => {
     } catch {
       console.log("Konosuba!");
     }
+  }
+
+  async function deletePost(id) {
+    const post = await $server.deleteServerPost(id);
+    data.blogs = await $server.getServerBlogs();
+
+    return post;
+  }
+
+  function changePost(item) {
+    postTemp.value = new Post(item.title, item.annotation, item.mainImageUrl, item.text);
+    postTemp.value.id = item.id;
+    console.log(postTemp.value)
+    isChangePost.value = !isChangePost.value;
+  }
+
+  function setChangePost() {
+    isChangePost.value = true;
+  }
+
+  async function updatePost(item) {
+    let post = new Post(item.value.title, item.value.annotation, item.value.mainImageUrl, item.value.text, item.value.id);
+
+    item.value = {};
+
+    
+    
+    const response = await $server.updateServerBlog(post);
+    return response;
+  }  
+
+  async function addPost(post) {
+    const response = await $server.createServerBlog(post.value);
+    data.blogs = await $server.getServerBlogs();
+
+    isChangePost.value = false;
+    return response;
   }
 
 </script>

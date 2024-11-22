@@ -76,8 +76,8 @@ export default class ServerAPI {
         return products;
       }
 
-      // Updates (i'm too tired to refactor types for now... future me will fix that)
-      async updateServerProducts(item: any) {
+      // Updates (я заебался, рефактор сделает будущий я)
+      async updateServerProduct(item: any) {
         item.flowersType = item.flowersType.code;
 
         const products = await $fetch(v1apiUrl + "/update/products", {
@@ -89,6 +89,17 @@ export default class ServerAPI {
         });
         return products;
       }
+
+      async updateServerBlog(post: any) {
+        const response = await $fetch(v1apiUrl + "/create/products", {
+          method: "POST",
+          body: {
+            post,
+            jwt: this.token
+          }
+        });
+        return response;
+      } 
 
       // Creates 
       async createServerProduct(item: IProductQuery) {
@@ -102,9 +113,31 @@ export default class ServerAPI {
         return products;
       }
 
+      async createServerBlog(post: any) {
+        const response = await $fetch(v1apiUrl + "/create/blogs", {
+          method: "POST",
+          body: {
+            post,
+            jwt: this.token
+          }
+        });
+        return response; 
+      }
+
       // Deletes
       async deleteServerProduct(id: number) {
         const response = await $fetch(v1apiUrl + "/delete/products", {
+          method: "POST",
+          body: {
+            id,
+            jwt: this.token
+          }
+        });
+        return response;
+      }
+
+      async deleteServerPost(id: number) {
+        const response = await $fetch(v1apiUrl + "/delete/blogs", {
           method: "POST",
           body: {
             id,

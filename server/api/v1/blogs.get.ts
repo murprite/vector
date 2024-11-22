@@ -12,6 +12,6 @@ export default defineEventHandler(async (event) => {
   }});
 
   if(!user) return ERRORS.WRONG_JWT;
-  
+  console.log("something")
   return await prisma.post.findMany();
 })
