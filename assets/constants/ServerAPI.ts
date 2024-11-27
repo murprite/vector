@@ -76,7 +76,7 @@ export default class ServerAPI {
         return products;
       }
 
-      // Updates (я заебался, рефактор сделает будущий я)
+      // Updates (я заебался, рефактор по типам сделает будущий я)
       async updateServerProduct(item: any) {
         item.flowersType = item.flowersType.code;
 
@@ -138,6 +138,16 @@ export default class ServerAPI {
 
       async deleteServerPost(id: number) {
         const response = await $fetch(v1apiUrl + "/delete/blogs", {
+          method: "POST",
+          body: {
+            id,
+            jwt: this.token
+          }
+        });
+        return response;
+      }
+      async deleteServerInbox(id: number) {
+        const response = await $fetch(v1apiUrl + "/delete/inbox", {
           method: "POST",
           body: {
             id,

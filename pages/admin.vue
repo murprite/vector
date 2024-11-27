@@ -26,285 +26,43 @@
       <div class="main__right w-full ml-[30px]">
         <Panel class="w-full min-h-full">
           <template v-if="currentCategory === 'home'">
-            <p>Основная страница</p>
-            <b class="text-2xl">Добро пожаловать, {{ currentUser.fullName ? currentUser.fullName : 'снова' }}</b>
-            <div class="home__stats">
+            <Home :user=currentUser>
               <div class="flex justify-between items-center">
                 <SelectButton v-model="statsSelect" :options="statsOptions" class="my-[15px]" />
                 <Button class="!bg-[#020617] h-[40px] !border-0">Скачать в виде JSON</Button>
               </div>
               <Panel>
-                <p>Отчёт продаж</p>
-                <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem]" />
+                  <p>Отчёт продаж</p>
+                  <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem]" />
               </Panel>
-            </div>
+            </Home>
           </template>
           <template v-if="currentCategory === 'products'">
-            <p>Товары</p>
-            <b class="text-2xl">Товары в продаже</b>
-            <DataView :value="data.products" :sortOrder="sortOrder" :sortField="sortField">
+            <Products :sortOrder :sortField :products="data.products" :jwt="currentUser.jwt" @update-items="async () => data.products = await $server.getServerProducts()">
               <template #header>
                 <div class="flex justify-between items-center">
                   <Select v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Сортрировка по цене"
                     @change="onSortChange($event)" />
-                  <Button @click="() => setAddItem()" label="Добавить" icon="pi pi-plus" />
                 </div>
               </template>
-              <template #list="slotProps">
-                <div class="flex flex-col">
-                  <div v-for="(item, index) in slotProps.items" :key="index">
-                    <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-                      :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
-                      <div class="md:w-40 relative">
-                        <Tag v-if="item.count === 0" value="Нет в наличии" severity="danger" class="absolute"
-                          style="left:5px; top: 5px"></Tag>
-                        <NuxtImg class="block xl:block mx-auto rounded w-full" :src="item.cardImageUrl"
-                          :alt="item.name" />
-                      </div>
-                      <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                          <div>
-                            <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                              getFlowerCategory(item.flowersType) }}</span>
-                            <div class="text-lg font-medium mt-2">{{ item.name }}</div>
-                          </div>
-                          <div class="bg-surface-100" style="border-radius: 30px">
-                            <div class="bg-surface-0 flex items-center justify-center">
-                              Количество на складе: {{ item.count ? item.count : 0 }}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="flex flex-col md:items-end gap-8">
-                          <span class="text-xl font-semibold">{{ item.price }}₽</span>
-                          <div class="flex flex-row-reverse md:flex-row gap-2">
-                            <Button icon="pi pi-trash" class="!bg-[#f40000] hover:!bg-[#a40000] border !border-red-700"
-                              @click="() => deleteItem(item.id)"></Button>
-                            <Button icon="pi pi-pencil" label="Изменить"
-                              class="flex-auto md:flex-initial whitespace-nowrap"
-                              @click="() => changeItem(item)"></Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </DataView>
+              
+            </Products>
           </template>
           <template v-if="currentCategory === 'blog'">
             
-            <div class="blog">
-              <p>Последние статьи</p>
-              <b class="text-2xl">Блог</b>
-              <DataView :value="data.blogs">
-                <template #header>
-                  
-                  <div class="flex justify-between items-center">
-                    <Button @click="() => setChangePost()" label="Добавить" icon="pi pi-plus" class="ml-auto"/>
-                  </div>
-                </template>
-                <template #list="slotProps">
-                  <div class="flex flex-col">
-                    <div v-for="(item, index) in slotProps.items" :key="index">
-                      <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-                        :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
-                        <div class="md:w-40 relative">
-                          {{ item.title }}
-                        </div>
-                        <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-                          <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                            <div>
-                              <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">
-                                {{ item.createdAt }}</span>
-                              <div class="text-lg font-medium mt-2">{{ item.annotation }}</div>
-                            </div>
-                            <div class="bg-surface-100" style="border-radius: 30px">
-                              <div class="bg-surface-0 flex items-center justify-center">
-                                {{ item.text }}
-                              </div>
-                            </div>
-                          </div>
-                          <div class="flex flex-col md:items-end gap-8">
-                            <div class="flex flex-row-reverse md:flex-row gap-2">
-                              <Button icon="pi pi-trash" class="!bg-[#f40000] hover:!bg-[#a40000] border !border-red-700"
-                                @click="() => deletePost(item.id)"></Button>
-                              <Button icon="pi pi-pencil" label="Изменить"
-                                class="flex-auto md:flex-initial whitespace-nowrap"
-                                @click="() => changePost(item)"></Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-              </DataView>
-            </div>
+            <Blog :blogs="data.blogs" :jwt="currentUser.jwt" @update-items="async () => data.blogs = await $server.getServerBlogs()" />
+          </template>
+          <template v-if="currentCategory === 'mail'">
+            
+            <Inbox :inbox="data.inbox" :jwt="currentUser.jwt" @update-items="async () => data.inbox = await $server.getServerInbox()" />
+          </template>
+          <template v-if="currentCategory === 'users'">
+            
+            <Users :users="data.users" :jwt="currentUser.jwt" @update-items="async () => data.users = await $server.getServerUsers()" />
           </template>
         </Panel>
       </div>
     </main>
-    <Dialog v-model:visible="isChangeItem" header="Изменить данные" modal>
-      <div class="flex flex-col gap-[15px]">
-        <InputGroup>
-          <InputGroupAddon>
-            <span>Название букета</span>
-          </InputGroupAddon>
-          <InputText v-model="itemTemp.value.name" placeholder="Название" />
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon>
-            <span>Описание</span>
-          </InputGroupAddon>
-          <InputText v-model="itemTemp.value.description" placeholder="Описание" />
-        </InputGroup>
-        <div class="flex gap-[15px]">
-          <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-money-bill"></i>
-              <span class="ml-[5px]">Цена</span>
-            </InputGroupAddon>
-            <InputNumber v-model="itemTemp.value.price" placeholder="Цена" />
-          </InputGroup>
-
-          <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-name"></i>
-              <span>Кол-во</span>
-            </InputGroupAddon>
-            <InputNumber v-model="itemTemp.value.count" placeholder="Кол-во на складе" />
-          </InputGroup>
-        </div>
-
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-image"></i>
-          </InputGroupAddon>
-          <InputText v-model="itemTemp.value.cardImageUrl" placeholder="Ссылка на превью (./product-1.png)" />
-          <NuxtImg :src="itemTemp.value.cardImageUrl" class="w-[180px] h-[180px]"
-            onerror="this.src='/_ipx/_/./Default.png" />
-        </InputGroup>
-        <NuxtImg />
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-image"></i>
-          </InputGroupAddon>
-          <InputText v-model="itemTemp.value.images"
-            placeholder="Ссылка на изображения (./product-1-1.png ./product-1-2.png)" />
-        </InputGroup>
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-petal"></i>
-          </InputGroupAddon>
-          <Select v-model="itemTemp.value.flowersType" :options="selectOptions" optionLabel="name" placeholder="Выберите тип букета" class="w-full md:w-56" />
-        </InputGroup>
-
-        <Button label="Обновить данные" @click="() => updateItem(itemTemp)"></Button>
-      </div>
-    </Dialog>
-    <Dialog v-model:visible="isChangePost" header="Изменить данные" modal>
-      <div class="flex flex-col gap-[15px]">
-        <InputGroup>
-          <InputGroupAddon>
-            <span>Название поста</span>
-          </InputGroupAddon>
-          <InputText v-model="postTemp.value.title" placeholder="Название" />
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon>
-            <span>Аннотация</span>
-          </InputGroupAddon>
-          <InputText v-model="postTemp.value.annotation" placeholder="Описание" />
-        </InputGroup>
-        <div class="flex gap-[15px]">
-          <InputGroup>
-            <InputGroupAddon>
-              <span class="ml-[5px]">Текст поста</span>
-            </InputGroupAddon>
-            <InputText v-model="postTemp.value.text" placeholder="Текст" />
-          </InputGroup>
-        </div>
-
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-image"></i>
-          </InputGroupAddon>
-          <InputText v-model="postTemp.value.mainImageUrl" placeholder="Ссылка на превью (./preview-1.png)" />
-          <NuxtImg :src="postTemp.value.mainImageUrl" class="w-[180px] h-[180px]"
-            onerror="this.src='/_ipx/_/./Default.png" />
-        </InputGroup>
-        <NuxtImg />
-
-        <Button label="Обновить данные" @click="() => addPost(postTemp)"></Button>
-      </div>
-    </Dialog>
-    <Dialog header="Добавить букет" modal v-model:visible="isAddItem">
-      <div class="flex flex-col gap-[15px]">
-        <InputGroup>
-          <InputGroupAddon>
-            <span>Название букета</span>
-          </InputGroupAddon>
-          <InputText v-model="addCurrentItem.value.name" placeholder="Название" />
-        </InputGroup>
-
-        <InputGroup>
-          <InputGroupAddon>
-            <span>Описание</span>
-          </InputGroupAddon>
-          <InputText v-model="addCurrentItem.value.description" placeholder="Описание" />
-        </InputGroup>
-
-        <div class="flex gap-[15px]">
-          <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-money-bill"></i>
-              <span class="ml-[5px]">Цена</span>
-            </InputGroupAddon>
-            <InputNumber v-model="addCurrentItem.value.price" placeholder="Цена" />
-          </InputGroup>
-
-          <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-name"></i>
-              <span>Кол-во</span>
-            </InputGroupAddon>
-            <InputNumber v-model="addCurrentItem.value.count" placeholder="Кол-во на складе" />
-          </InputGroup>
-        </div>
-
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-image"></i>
-          </InputGroupAddon>
-          <InputText v-model="addCurrentItem.value.cardImageUrl" placeholder="Ссылка на превью (./product-1.png)" />
-          <NuxtImg :src="addCurrentItem.value.cardImageUrl" class="w-[180px] h-[180px]"
-            onerror="this.src='./Default.png'" />
-        </InputGroup>
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-image"></i>
-          </InputGroupAddon>
-          <InputText v-model="addCurrentItem.value.images"
-            placeholder="Ссылка на изображения (./product-1-1.png ./product-1-2.png)" />
-        </InputGroup>
-
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-petal"></i>
-          </InputGroupAddon>
-          <Select v-model="addCurrentItem.value.flowersType" :options="selectOptions" optionLabel="name" placeholder="Выберите тип букета" class="w-full md:w-56" />
-        </InputGroup>
-
-        <Button label="Добавить букет" @click="() => addItem(addCurrentItem.value)"></Button>
-      </div>
-    </Dialog>
-
   </template>
 
 </template>
@@ -314,39 +72,16 @@
   import Divider from 'primevue/divider';
   import Toolbar from 'primevue/toolbar';
   import Panel from "primevue/panel";
-  import SelectButton from 'primevue/selectbutton';
-  import Chart from 'primevue/chart';
-  import InputGroup from 'primevue/inputgroup';
-  import InputGroupAddon from 'primevue/inputgroupaddon';
-  import Dialog from 'primevue/dialog';
   import Select from 'primevue/select';
 
+
   import ServerAPI from '~/assets/constants/ServerAPI';
-  import { MONTHS, getFlowerCategory } from '~/assets/constants/constants';
-  import InputNumber from 'primevue/inputnumber';
-
-  class Item {
-    constructor(name='Букет', cardImageUrl="./Default.png", images="./product-1-1.png", price=1000, description='Описание', flowersType={name: "Высушенные цветы", code: 0}, count=0) {
-      this.count = count;
-      this.name = name;
-      this.cardImageUrl = cardImageUrl;
-      this.images = images;
-      this.price = price;
-      this.description = description;
-      this.flowersType = flowersType;
-    }
-  }
-
-  class Post {
-    constructor(title='Заголовок', annotation="Аннотация", mainImageUrl="./preview.png", text='Текст статьи', imagesUrl="./preview.png", id=null) {
-      this.title = title;
-      this.annotation = annotation;
-      this.mainImageUrl = mainImageUrl;
-      this.text = text;
-      this.id = id;
-      this.imagesUrl = imagesUrl;
-    }
-  }
+  import { MONTHS } from '~/assets/constants/constants';
+  import Home from '~/assets/components/admin/Home.vue';
+  import Products from '~/assets/components/admin/Products.vue';
+  import Blog from '~/assets/components/admin/Blog.vue';
+  import Users from '~/assets/components/admin/Users.vue';
+  import Inbox from '~/assets/components/admin/Inbox.vue';
 
   const items = ref([
     { label: "Основное", icon: "home", value: 'home' },
@@ -359,32 +94,10 @@
   const statsSelect = ref("Ежедневный");
   const statsOptions = ref(["Ежедневный", "Ежемесячный", "Ежегодный"]);
 
-  const selectOptions = ref([
-    {name: "Высушенные цветы", code: 0},
-    {name: "Свежие цветы", code: 1},
-    {name: "Ароматические цветы", code: 2},
-    {name: "Вазы", code: 3},
-    {name: "Свечи", code: 4},
-    {name: "Освежители", code: 5},
-  ]);
-
   const chartData = ref();
   const chartOptions = ref();
 
-  const isChangeItem = ref(false);
-  const isDeleteItem = ref(false);
-  const isAddItem = ref(false);
-  const isChangePost = ref(false);
-
   let currentCategory = ref("home");
-
-  const currentItem = reactive({});
-  const addCurrentItem = reactive(new Item());
-  addCurrentItem.value = new Item();
-
-  const itemTemp = reactive({});
-  const postTemp = reactive({});
-  postTemp.value = new Post();
 
   let currentUser = reactive({
     isAdmin: false,
@@ -551,91 +264,6 @@ const setChartOptions = () => {
             }
         }
     };
-  }
-
-  function changeItem(item) {
-    currentItem.value = item;
-    itemTemp.value = new Item(item.name, item.cardImageUrl, item.images, item.price, item.description, item.flowersType, item.count);
-    itemTemp.value.id = item.id;
-    isChangeItem.value = !isChangeItem.value;
-
-  }
-
-  async function addItem(item) {
-    console.log(addCurrentItem.value)
-    const newItem = new Item(item.name, item.cardImageUrl, item.images, item.price, item.description, item.flowersType, item.count);
-    addCurrentItem.value = {};
-    newItem.flowersType = item.flowersType.code;
-
-    const response = await $server.createServerProduct(newItem);
-    data.products = await $server.getServerProducts();
-    isAddItem.value = false;
-  }
-
-  function setAddItem() {
-    isAddItem.value = true;
-    console.log(isAddItem)
-  } 
-
-  async function updateItem(item) {
-    currentItem.value = item;
-    console.log(item.value)
-    try {
-      const response = await $server.updateServerProduct(item.value);
-      data.products = await $server.getServerProducts();
-      currentItem.value = item.value;
-      isChangeItem.value = false;
-
-    } catch(e) {
-      console.log("Konosuba!", e)
-    }
-  }
-
-  async function deleteItem(itemId) {
-    try {
-      const response = await $server.deleteServerProduct(itemId);
-      data.products = await $server.getServerProducts();
-
-    } catch {
-      console.log("Konosuba!");
-    }
-  }
-
-  async function deletePost(id) {
-    const post = await $server.deleteServerPost(id);
-    data.blogs = await $server.getServerBlogs();
-
-    return post;
-  }
-
-  function changePost(item) {
-    postTemp.value = new Post(item.title, item.annotation, item.mainImageUrl, item.text);
-    postTemp.value.id = item.id;
-    console.log(postTemp.value)
-    isChangePost.value = !isChangePost.value;
-  }
-
-  function setChangePost() {
-    isChangePost.value = true;
-  }
-
-  async function updatePost(item) {
-    let post = new Post(item.value.title, item.value.annotation, item.value.mainImageUrl, item.value.text, item.value.id);
-
-    item.value = {};
-
-    
-    
-    const response = await $server.updateServerBlog(post);
-    return response;
-  }  
-
-  async function addPost(post) {
-    const response = await $server.createServerBlog(post.value);
-    data.blogs = await $server.getServerBlogs();
-
-    isChangePost.value = false;
-    return response;
   }
 
 </script>
