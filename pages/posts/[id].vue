@@ -23,13 +23,13 @@ const {status, data: post} = await useFetch("/api/posts/getPostByID", {
             <div class="flex">
                 <div class="max-w-[60vw] text-[1.2rem]">
                     <div class="border-b mb-[15px] border-black">
-                        <Title class="text-[2.2rem] my-[15px]">{{ post.title }}</Title>
+                        
                     </div>
                     <div class="">
+                        <Title class="text-[2.2rem] my-[15px]">{{ post.title }}</Title>
                         <b>Аннотация: </b>{{ post.annotation }}
                     </div>
-                    <div class="my-[30px]">
-                        {{ post.text }}
+                    <div class="my-[30px]" v-html="post.text">
                     </div>
                     <div class="">
                         <p class="text-gray-500">Пост был сделан: {{ post.createdAt }}</p>

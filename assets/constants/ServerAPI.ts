@@ -91,7 +91,7 @@ export default class ServerAPI {
       }
 
       async updateServerBlog(post: any) {
-        const response = await $fetch(v1apiUrl + "/create/products", {
+        const response = await $fetch(v1apiUrl + "/update/blogs", {
           method: "POST",
           body: {
             post,

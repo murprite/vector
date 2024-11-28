@@ -5,7 +5,7 @@
     <DataView :value="blogs">
       <template #header>
         <div class="flex justify-between items-center">
-          <Button @click="() => setChangePost()" label="Добавить" icon="pi pi-plus" class="ml-auto" />
+          <Button @click="() => isAddPost = true" label="Добавить" icon="pi pi-plus" class="ml-auto" />
         </div>
       </template>
       <template #list="slotProps">
@@ -44,8 +44,8 @@
       </template>
     </DataView>
   </div>
-  <Dialog v-model:visible="isChangePost" header="Добавить пост" modal>
-      <div class="flex flex-col gap-[15px]">
+  <Dialog v-model:visible="isAddPost" header="Добавить пост" modal>
+      <div class="flex flex-col gap-[15px] w-[90wv] h-[90vh]">
         <InputGroup>
           <InputGroupAddon>
             <span>Название поста</span>
@@ -59,14 +59,8 @@
           <InputText v-model="postTemp.value.annotation" placeholder="Описание" />
         </InputGroup>
         <div class="flex gap-[15px]">
-          <InputGroup>
-            <InputGroupAddon>
-              <span class="ml-[5px]">Текст поста</span>
-            </InputGroupAddon>
-            <InputText v-model="postTemp.value.text" placeholder="Текст" />
-          </InputGroup>
+          <Editor v-model="editorValue" editorStyle="height: 640px; width: 720px;" />
         </div>
-
 
         <InputGroup>
           <InputGroupAddon>
@@ -76,24 +70,54 @@
           <NuxtImg :src="postTemp.value.mainImageUrl" class="w-[180px] h-[180px]"
             onerror="this.src='/_ipx/_/./Default.png" />
         </InputGroup>
-        <NuxtImg />
 
-        <Button label="Создать пост" @click="() => addPost(postTemp)"></Button>
+        <Button label="Создать пост" class="h-[30px]" @click="() => addPost(postTemp)"></Button>
+      </div>
+    </Dialog>
+    <Dialog v-model:visible="isChangePost" header="Добавить пост" modal>
+      <div class="flex flex-col gap-[15px] w-[90wv] h-[90vh]">
+        <InputGroup>
+          <InputGroupAddon>
+            <span>Название поста</span>
+          </InputGroupAddon>
+          <InputText v-model="postTemp.value.title" placeholder="Название" />
+        </InputGroup>
+        <InputGroup>
+          <InputGroupAddon>
+            <span>Аннотация</span>
+          </InputGroupAddon>
+          <InputText v-model="postTemp.value.annotation" placeholder="Описание" />
+        </InputGroup>
+        <div class="flex gap-[15px]">
+          <Editor v-model="editorValue" editorStyle="height: 640px; width: 720px;" />
+        </div>
+
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-image"></i>
+          </InputGroupAddon>
+          <InputText v-model="postTemp.value.mainImageUrl" placeholder="Ссылка на превью (./preview-1.png)" />
+          <NuxtImg :src="postTemp.value.mainImageUrl" class="w-[180px] h-[180px]"
+            onerror="this.src='/_ipx/_/./Default.png" />
+        </InputGroup>
+
+        <Button label="Изменить пост" class="h-[30px]" @click="() => updatePost(postTemp.value)"></Button>
       </div>
     </Dialog>
 </template>
 
 <script setup>
   import ServerAPI from '~/assets/constants/ServerAPI';
+  import Editor from 'primevue/editor';
 
   const { blogs, jwt } = defineProps(['blogs', 'jwt']);
   const emit = defineEmits(['updateItems']);
 
   const $server = new ServerAPI(jwt);
-
-
+  const editorValue = ref();
+  
   class Post {
-    constructor(title='Заголовок', annotation="Аннотация", mainImageUrl="./preview.png", text='Текст статьи', imagesUrl="./preview.png", id=null) {
+    constructor(title='Заголовок', annotation="Аннотация", mainImageUrl="./preview.png", text=editorValue.value, imagesUrl="./preview.png", id=null) {
       this.title = title;
       this.annotation = annotation;
       this.mainImageUrl = mainImageUrl;
@@ -107,6 +131,7 @@
   postTemp.value = new Post();
 
   const isChangePost = ref(false);
+  const isAddPost = ref(false);
 
   async function deletePost(id) {
     const post = await $server.deleteServerPost(id);
@@ -115,33 +140,32 @@
     return post;
   }
 
-  function changePost(item) {
-    postTemp.value = new Post(item.title, item.annotation, item.mainImageUrl, item.text, "", item.id);
-    isChangePost.value = false;
-  }
-
-  function setChangePost() {
-    isChangePost.value = true;
-  }
-
   async function updatePost(item) {
-    let post = new Post(item.value.title, item.value.annotation, item.value.mainImageUrl, item.value.text, item.value.id);
-    item.value = {};
+    let post = new Post(item.title, item.annotation, item.mainImageUrl, editorValue.value, "", item.id);
+    postTemp.value = {};
 
     const response = await $server.updateServerBlog(post);
     emit("updateItems");
 
+    isChangePost.value = false;
     return response;
   }  
 
   async function addPost(post) {
+    post.value.text = editorValue.value;
+    editorValue.value = "";
+    
     const response = await $server.createServerBlog(post.value);
     emit("updateItems");
 
-    isChangePost.value = false;
+    isAddPost.value = false;
     return response;
   }
 
-</script>
+  function changePost(item) {
+    postTemp.value = item;
+    editorValue.value = postTemp.value.text;
 
-<style></style>
+    isChangePost.value = true;
+  }
+</script>
