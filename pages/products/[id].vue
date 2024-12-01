@@ -102,8 +102,8 @@ const userChoice = defineModel('userChoice', {
 </script>
 
 <template>
-    <title>{{ product.name }}</title>
     <div class="wrapper grid gap-[1px] bg-black bg-[url]">
+        <title>{{ product.name }}</title>
         <Header />
             <main class="grid grid-cols-2 bg-black gap-[1px]">
                 <div class="main__image h-[90vh] relative w-100 overflow-hidden">

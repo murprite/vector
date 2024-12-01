@@ -1,6 +1,6 @@
 <template>
-    <title>Освежители</title>
     <div class="index grid">
+        <title>Освежители</title>
         <Header />
         <div class="grid grid-cols-1 md:grid-cols-2 border border-black border-l-0 border-r-0" v-if="status !== 'pending' && products.length !== 0">
             <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-cover bg-white">

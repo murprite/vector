@@ -11,41 +11,41 @@ const {status, data: post} = await useFetch("/api/posts/getPostByID", {
     params: {id}
 });
 
-
-
 </script>
 
 <template>
-    <title>{{ post.title }}</title>
-    <Header/>
-    <div class="p-[50px] border border-black">  
-        <template v-if="status === 'success'">
-            <div class="flex">
-                <div class="max-w-[60vw] text-[1.2rem]">
-                    <div class="border-b mb-[15px] border-black">
-                        
+    <div class="">
+        <title>{{ post.title }}</title>
+        <Header/>
+        <div class="p-[50px] border border-black">  
+            <template v-if="status === 'success'">
+                <div class="flex">
+                    <div class="max-w-[60vw] text-[1.2rem]">
+                        <div class="border-b mb-[15px] border-black">
+                            
+                        </div>
+                        <div class="">
+                            <Title class="text-[2.2rem] my-[15px]">{{ post.title }}</Title>
+                            <b>Аннотация: </b>{{ post.annotation }}
+                        </div>
+                        <div class="my-[30px]" v-html="post.text">
+                        </div>
+                        <div class="">
+                            <p class="text-gray-500">Пост был сделан: {{ post.createdAt }}</p>
+                        </div>
                     </div>
-                    <div class="">
-                        <Title class="text-[2.2rem] my-[15px]">{{ post.title }}</Title>
-                        <b>Аннотация: </b>{{ post.annotation }}
-                    </div>
-                    <div class="my-[30px]" v-html="post.text">
-                    </div>
-                    <div class="">
-                        <p class="text-gray-500">Пост был сделан: {{ post.createdAt }}</p>
+                    <div class="w-full ml-[100px]">
+                        <NuxtImg :src="post.mainImageUrl" class="h-[100%] w-[100%]"/> 
                     </div>
                 </div>
-                <div class="w-full ml-[100px]">
-                    <NuxtImg :src="post.mainImageUrl" class="h-[100%] w-[100%]"/> 
-                </div>
-            </div>
-        </template>
-        <template v-else-if="status === 'pending'">
-        
-        </template>
-        <template v-else>
-            <Empty />
-        </template>
+            </template>
+            <template v-else-if="status === 'pending'">
+            
+            </template>
+            <template v-else>
+                <Empty />
+            </template>
+        </div>
+        <Footer/>
     </div>
-    <Footer/>
 </template>

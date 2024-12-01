@@ -4,6 +4,9 @@ import Aura from '@primevue/themes/aura';
 export default defineNuxtConfig({
   devtools: { enabled: true },
   compatibilityDate: '2024-08-08',
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
   modules: [
     "@nuxtjs/tailwindcss",
     "@primevue/nuxt-module",

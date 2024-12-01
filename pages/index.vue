@@ -1,9 +1,11 @@
 <template>
-    <title>Люксовые букеты</title>
-    <div class="index bg-black grid gap-[1px]">
-        <Header />
-        <Main />
-        <Footer />
+    <div class="">
+        <title>Люксовые букеты</title>
+        <div class="index bg-black grid gap-[1px]">
+            <Header />
+            <Main />
+            <Footer />
+        </div>
     </div>
 </template>
   

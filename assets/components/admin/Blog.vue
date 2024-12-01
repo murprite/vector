@@ -158,6 +158,7 @@
     const response = await $server.createServerBlog(post.value);
     emit("updateItems");
 
+    post.value = {};
     isAddPost.value = false;
     return response;
   }

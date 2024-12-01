@@ -1,6 +1,7 @@
 <template>
-    <title>Блог</title>
     <div class="index bg-black grid gap-[1px]">
+        <title>Блог</title>
+
         <Header />
         <div v-if="status === 'success'">
             <template v-for="post in posts">

@@ -1,7 +1,6 @@
 <template>
-  <title>Панель администрирования</title>
   <template v-if="currentUser.isAdmin">
-
+    <title>Панель администрирования</title>
     <main class="flex p-[15px] h-[100vh] w-full">
       <div class="main__left h-full">
         <Toolbar class="flex flex-col justify-start items-center h-full !min-w-0 p-[15px]">

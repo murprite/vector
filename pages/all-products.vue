@@ -1,6 +1,7 @@
 <template>
-    <title>Все товары</title>
     <div class="index bg-black grid gap-[1px]">
+        <title>Все товары</title>
+
         <Header />
         <div class=" bg-white h-[100%]">
             <div class="main-block md:row-span-5 md:grid-cols-4 gap-[1px] sm:grid-cols-2 grid" >

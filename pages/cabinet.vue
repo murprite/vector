@@ -1,6 +1,6 @@
 <template>
-  <title>Личный профиль</title>
   <div class="bg-black">
+    <title>Личный профиль</title>
     <Header></Header>
     <main class="grid grid-cols-2 bg-black gap-[1px] my-[1px] min-h-[80vh]">
       <template class="" v-if="status === 'success'">

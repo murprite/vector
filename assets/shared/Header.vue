@@ -187,6 +187,7 @@ import CartItem from './CartItem.vue';
 
 import Button from './Button.vue';
 import Title from './Title.vue';
+import ServerAPI from '../constants/ServerAPI';
 
 let isMenuOpen = ref(false);
 let isProfileOpen = ref(false);
@@ -208,13 +209,13 @@ onMounted(async () => {
   let jwt = useCookie('luxflowers-jwt').value;
   jwt = !jwt ? '' : jwt.jwt;
 
-  let { data: user, status } = await useFetch("/api/user/jwt", {
+  let user = await $fetch("/api/user/jwt", {
     method: "POST",
-    body: jwt
+    body: {
+      jwt
+    }
   });
   currentUser = user;
-
-  console.log(user)
 
   cart = useCookie('cart');
   if(!cart) cart.value = [];
