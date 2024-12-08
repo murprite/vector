@@ -280,7 +280,7 @@ function getTotalPrice() {
 async function validateAuthButton(e) {
   currentStatus.value = "loading";
 
-  const pass = hashPass(currentPass);
+  const pass = currentPass;
   const userName = currentUserName;
 
   const body = JSON.stringify({
@@ -321,7 +321,7 @@ async function openCart() {
 }
 function hashPass(pass) {
   // TODO: some hash func
-  return pass;
+  return ;
 }
 
 
