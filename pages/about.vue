@@ -69,7 +69,7 @@
   import Footer from '~/assets/shared/Footer.vue';
   import Header from '~/assets/shared/Header.vue';
   import Title from '~/assets/shared/Title.vue';
-  import { Icon } from '@iconify/vue/dist/iconify.js';
+  import { Icon } from "@iconify/vue";
   
 </script>
 
