@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/image",
     "@prisma/nuxt",
-    "@nuxtjs/color-mode",
   ],
   primevue: {
     options: {
