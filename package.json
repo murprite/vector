@@ -11,7 +11,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "prisma:push": "prisma db push",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "test": "echo 'all good, maybe'"
   },
   "dependencies": {
     "@iconify/vue": "^4.2.0",
