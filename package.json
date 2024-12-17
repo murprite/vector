@@ -35,6 +35,8 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0"
+    "@playwright/test": "^1.49.1",
+    "@prisma/client": "^5.22.0",
+    "@types/node": "^22.10.2"
   }
 }
