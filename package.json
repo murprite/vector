@@ -23,6 +23,7 @@
     "@primevue/nuxt-module": "^4.0.4",
     "@primevue/themes": "^4.2.4",
     "@prisma/nuxt": "^0.0.35",
+    "@playwright/test": "^1.49.1",
     "chart.js": "^4.4.6",
     "nuxt": "^3.12.4",
     "nuxt-primevue": "^3.0.0",
