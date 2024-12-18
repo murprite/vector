@@ -20,7 +20,7 @@ jobs:
     - name: Create build
       run: npm run build
     - name: Launch build
-      run: node .\.output\server\index.mjs & npx wait-on http://localhost:3000
+      run: node .output/server/index.mjs & npx wait-on http://localhost:3000
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
