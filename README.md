@@ -1,59 +1,82 @@
-# A fullstack project.
+# LuxFlowers (Fullstack проект сайта)
 
-Prisma, Nuxt3 were used to create this project.
-Plus few modules like TailwindCSS, PrimeVue, etc.
+## Описание проекта
+Этот проект представляет собой систему взаимодействия пользователей. Пользователи сайта могут обозревать, покупать продукты сайта. Также предоставив токен администратора, пользователь имеет право создавать/изменять/удалять сущности в базе данных, добавлять новые продукты/посты/сообщения/входящие.
 
-# REST API
-Implemented REST API. All requests require admin token (JWT) in DB.
-For using API you need to create in DB admin JWT token and pass it in the request body.
-Most DB changes like create, update, delete are made with POST method.
-Example of POST request:
+## Структура проекта
+Проект является монолитным, состоит из веб-сервера, который обрабатывет все входящие запросы.
 
-```javascript
-    const jwt = ""; // admin token (JWT)
-    const newProduct = {}; // Create product, check in scheme.prisma for properties
+### 1. Веб-сервер
+Веб-сервер обрабатывает все запросы, при предоставлении токена администратора в cookies пользователя, или же предоставив токен администратора в POST теле запроса, GET параметре, веб-сервер даёт право пользоваться REST API.
+REST API включает в себя следующие эндпойнты:
+- **/api/v1/create** - создаёт сущность в БД
+- **/api/v1/delete** - удаляет сущность в БД
+- **/api/v1/update** - обновляет сущность в БД
+- **/api/v1/{тип}** - возвращает любую сущность, принадлежащую определённому типу (blogs/inbox/users/stats/products/chats)
+Примеры работы с REST API и тела запросов приведены выше.
 
-    const product = await fetch("https://[current_url]/v1/create/products", {
-        method: 'POST',
-        body: {
-            jwt,
-            item: newProduct
-        } 
-    });
-    console.log(product) // Our created product in DB
-```
- To get something from DB, you're enough to pass GET method with admin token. If you want to get something specific, pass an ID of the product/post/user inside the params
 
- ```javascript
-    const jwt = ""; // admin token (JWT)
+#### Структура базы данных:
+База данных состоит из нескольких таблиц, а именно:
+- Пользователи
+- Продукты
+- Входящие
+- Блоги
+- Статистика
 
-    const products = await fetch(`https://[current_url]/v1/products?jwt=${jwt}`);
-    console.log(products) // All products
+## Дополнительная информация
+Проект разрабатывается локальном сервере с использованием следующих практик и инструментов:
 
-    const product = await fetch(`https://[current_url]/v1/products?jwt=${jwt}&id=2`);
-    console.log(product) // Product with ID=2
- ```
+- **Тестирование**: Автоматические модульные тесты написаны с использованием Playwright для обеспечения корректности функционала.
+- **Автоматическое развёртывание**: С помощью Github Actions реализован непрерывный цикл интеграции и доставки (CI/CD).
 
-# Init 
+## Установка и настройка
+1. Склонируйте репозиторий на локальную машину:
+   ```bash
+   git clone https://github.com/murprite/vector
+   ```
+2. Установите Node.JS последней версии
+
+3. Создайте файл .env и укажите переменную POSTGRES_URL:
+    ```env
+    POSTGRES_URL="postgres://{имя_администратора_бд}:{пароль_администратора}@{ссылка_на_бд}:{порт}"
+    ```
+
+4. Инициализируйте проект с помощью
+    ```bash
+    npm install
+    ```
+
+## Запуск
+ - Запуск development версии для разработки
+   ```bash
+    npm run dev
+   ```
+ - Компиляция всего проекта в рабочую версию (результат в .output директории)
+   ```bash
+    npm run build
+   ```
+
+
+## Иные команды
+
 ```bash
-npm install
-```
-
-# Run dev server
-```bash
-npm run dev
-```
-
-# Build
-```bash
-npm run build
-```
-
-# Misc
-
-```bash
-# Get local display of DB (ENV is needed)
+# Визуальное отображение таблиц БД
 npm run prisma:studio
 
-# Push new scheme to remote DB (resets all data)
+# Обновление сущностей в базе данных (все данные сбрасываются)
 npm run prisma:push
+
+# Миграция базы данных
+npm run prisma:migrate
+
+# Выполение тестирования
+npm run test
+
+```
+
+## Лицензия  
+
+Этот проект распространяется под лицензией **GNU GPL v3**.  
+
+Подробные условия см. в файле `LICENSE`.  
