@@ -133,7 +133,7 @@
     import backgroundUrl from "~/public/wedding_img.png";
     
     // TODO: fetch rewiews from DB/google/someothershit, or leave it like that
-    function handleValidation(e, regexp) {
+    async function handleValidation(e, regexp) {
         let elem = e.target;
         let currentValue = e.target.value;
         let regex = new RegExp(regexp);
@@ -143,10 +143,22 @@
         } else {
             elem.style.border = "1px solid gray";
         }
+        let formdata = new FormData();
+        formdata.append("text", currentValue);
+        
+        let response = await checkSwearing(formdata);
 
+        console.log("Зафиксирован мат")
         console.log("changed value")
     }
 
+    async function checkSwearing(formdata) {
+        return await $fetch("https://db_neiro_filter_apis.db-of.ru:2053/api/mat", {
+            method: "POST",
+            body: formdata,
+        });
+    }
+    console.log(await checkSwearing());
     
     const products = ref([
         {id: 1488, text: "Хорошие цветы, доставка пришла быстро", author: "Jeff"},

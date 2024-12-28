@@ -2,7 +2,7 @@
     <div class="index grid">
         <title>Освежители</title>
         <Header />
-        <div class="grid grid-cols-1 md:grid-cols-2 border border-black border-l-0 border-r-0" v-if="status !== 'pending' && products.length !== 0">
+        <div class="grid grid-cols-1 md:grid-cols-2 border border-black border-l-0 border-r-0" v-if="products.length !== 0">
             <div class="bg-[url(/fresh-flowers.png)] bg-no-repeat bg-cover bg-white">
                 <p class="text-[4rem] text-white text-center my-[260px]">Освежители</p>
             </div>
@@ -25,8 +25,8 @@
     import Empty from '~/assets/shared/Empty.vue';
     import ProductCard from '~/assets/shared/ProductCard.vue';
 
-    const { status, data: products } = await useFetch("/api/products", {
-        query: {flowersType: 1}
+    const products = await $fetch("/api/products", {
+        query: {flowersType: 5}
     });
 
 </script>

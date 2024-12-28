@@ -42,11 +42,6 @@
         <li><a href="/candles">Ароматические свечи</a></li>
         <li><a href="/refreshers">Освежители воздуха</a></li>
       </ul>
-      <p class="text-gray-500 text-[18px] mb-[24px] mt-[24px]">Услуги</p>
-      <ul>
-        <li><a href="/subscription">Подписка на цветы</a></li>
-        <li><a href="/decoration-events">Свадьбы & Мероприятия декор</a></li>
-      </ul>
     </div>
     <div class="footer__about p-[40px]">
       <p class="text-gray-500 text-[18px] mb-[24px]">О нас</p>
@@ -54,17 +49,11 @@
         <li><a href="/about">О нас</a></li>
         <li><a href="/blog">Блог</a></li>
       </ul>
-      <ul class="mt-[24px]">
-        <li><a href="/delivery">Доставка & возвраты</a></li>
-        <li><a href="/">Оферта</a></li>
-        <li><a href="/agreement">Пользовательское соглашение</a></li>
-      </ul>
     </div>
   </footer>
 </template>
 
 <script setup>
-  import SubTitle from './SubTitle.vue';
 
   const isEmailVerif = ref(false);
 

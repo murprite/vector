@@ -49,11 +49,6 @@
                       <input type="text" @input="(e) => userData.cvv = e.target.value" placeholder="CVV код" class="px-[15px] w-full  py-[20px] text-gray border-[2px] outline-none mb-[10px]">
                     </div>
                     <button class="py-[20px] w-full bg-black text-white">Сделать покупку</button>
-                    <div class="">Или заплатить используя:</div>
-                    <div class="flex">
-                      <button class="">Apple pay</button>
-                      <button>Google pay</button>
-                    </div>
                   </div>
               </AccordionContent>
           </AccordionPanel>
